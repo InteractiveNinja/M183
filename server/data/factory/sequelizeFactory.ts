@@ -1,8 +1,8 @@
 import { Sequelize } from 'sequelize';
 import * as mariadb from 'mariadb';
 
-export class SequlizeFactory {
-  private static instance: SequlizeFactory;
+export class SequelizeFactory {
+  private static instance: SequelizeFactory;
   private sequelize = new Sequelize('bill', 'root', 'docker', {
     host: 'localhost',
     dialect: 'mariadb',
@@ -20,10 +20,10 @@ export class SequlizeFactory {
       });
   }
 
-  public static getInstance(): SequlizeFactory {
-    if (!SequlizeFactory.instance) {
-      SequlizeFactory.instance = new SequlizeFactory();
+  public static getInstance(): SequelizeFactory {
+    if (!SequelizeFactory.instance) {
+      SequelizeFactory.instance = new SequelizeFactory();
     }
-    return SequlizeFactory.instance;
+    return SequelizeFactory.instance;
   }
 }
