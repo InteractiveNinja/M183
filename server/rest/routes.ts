@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { DaoFactory } from '../data/factory/dao.factory';
+import { DaoFactory } from '../data/factory/daoFactory';
 
 export const apiRoutes = Router();
 

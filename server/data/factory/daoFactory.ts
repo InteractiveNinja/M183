@@ -1,4 +1,4 @@
-import { UserDao } from '../dao/user.dao';
+import { UserDao } from '../dao/userDao';
 
 export class DaoFactory {
   private static instance: DaoFactory;
