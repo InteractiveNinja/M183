@@ -2,7 +2,17 @@ import { DataTypes, Model } from 'sequelize';
 import { SequelizeFactory } from '../factory/sequelizeFactory';
 
 const sequelize = SequelizeFactory.getInstance().getSequelize();
-export class User extends Model {}
+export class User extends Model {
+  declare id: number;
+  declare username: string;
+  declare password: string;
+  declare firstname: string;
+  declare lastname: string;
+  declare gender: string;
+  declare address: string;
+  declare city: string;
+  declare job: string;
+}
 
 User.init(
   {
