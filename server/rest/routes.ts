@@ -10,8 +10,8 @@ const userDao = daoFactory.createUserDao();
 apiRoutes.post('/login', (req, res) => {
   userDao
     .create({
-      username: 'Steve',
-      password: '',
+      username: 'safeSteve',
+      password: 'katze1!1',
       address: '',
       city: '',
       firstname: '',
