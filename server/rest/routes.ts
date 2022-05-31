@@ -6,6 +6,7 @@ export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
 
 const userDao = daoFactory.createUserDao();
+const billDao = daoFactory.createBillDao();
 
 apiRoutes.post('/login', (req, res) => {
   userDao
@@ -23,4 +24,18 @@ apiRoutes.post('/login', (req, res) => {
       userDao.findAll().then((users) => res.json(users));
     })
     .catch(() => res.status(500));
+});
+
+apiRoutes.get('/bills', (req, res) => {
+  billDao
+    .create({
+      amount: 2000,
+      deadline: new Date(),
+    })
+    .then(() => {
+      billDao.findAll().then((bills) => {
+        res.send(bills);
+      });
+    })
+    .catch(() => res.sendStatus(500));
 });
