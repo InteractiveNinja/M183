@@ -1,5 +1,6 @@
 import { DaoInterface } from './dao.interface';
 import { User } from '../models/user';
+import { Bill } from '../models/bill';
 
 export interface UserDefinition {
   username: string;
@@ -22,6 +23,6 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
   }
 
   findById(id: number | string): Promise<User | null> {
-    return User.findByPk(id);
+    return User.findByPk(id, { include: Bill });
   }
 }
