@@ -4,12 +4,13 @@ import { Logger } from '../../util/logger';
 
 export class SequelizeFactory {
   private static instance: SequelizeFactory;
+  private logger = Logger.getInstance();
   private sequelize = new Sequelize('bill', 'root', 'docker', {
     host: 'localhost',
     dialect: 'mariadb',
     dialectModule: mariadb,
+    logging: (msg) => this.logger.log(msg),
   });
-  private logger = Logger.getInstance();
 
   private constructor() {
     this.sequelize
