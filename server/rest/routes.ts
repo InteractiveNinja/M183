@@ -36,6 +36,20 @@ apiRoutes.get('/bill/:id', (req, res) => {
   res.sendStatus(400);
 });
 
+apiRoutes.post('/create/bill', (req, res) => {
+  // todo adds checking for fields
+  const billDefinition: BillDefinition = req.body;
+  billDao
+    .create(billDefinition)
+    .then(() => {
+      res.sendStatus(200);
+      return;
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
 apiRoutes.get('/users', (req, res) => {
   userDao.findAll().then((users) => {
     res.json(users);
@@ -66,18 +80,4 @@ apiRoutes.post('/create/user', (req, res) => {
     return;
   });
   res.sendStatus(400);
-});
-
-apiRoutes.post('/create/bill', (req, res) => {
-  // todo adds checking for fields
-  const billDefinition: BillDefinition = req.body;
-  billDao
-    .create(billDefinition)
-    .then(() => {
-      res.sendStatus(200);
-      return;
-    })
-    .catch(() => {
-      res.sendStatus(400);
-    });
 });
