@@ -12,6 +12,7 @@ export class User extends Model {
   declare address: string;
   declare city: string;
   declare job: string;
+  declare admin: boolean;
 
   override save(options?: SaveOptions<any>): Promise<this> {
     this.encryptPassword();
@@ -65,6 +66,10 @@ User.init(
     },
     job: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    admin: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },
