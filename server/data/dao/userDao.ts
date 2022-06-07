@@ -13,12 +13,8 @@ export interface UserDefinition {
 }
 
 export class UserDao implements DaoInterface<User, UserDefinition> {
-  create(user: UserDefinition): Promise<boolean> {
-    return User.create({ ...user })
-      .then(() => true)
-      .catch(() => {
-        return false;
-      });
+  create(user: UserDefinition): Promise<void> {
+    return User.create({ ...user }).then();
   }
 
   findAll(): Promise<User[]> {

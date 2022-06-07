@@ -7,10 +7,8 @@ export interface BillDefinition {
   UserId: number;
 }
 export class BillDao implements DaoInterface<Bill, BillDefinition> {
-  create(toCreate: BillDefinition): Promise<boolean> {
-    return Bill.create({ ...toCreate })
-      .then(() => true)
-      .catch(() => false);
+  create(toCreate: BillDefinition): Promise<void> {
+    return Bill.create({ ...toCreate }).then();
   }
 
   findAll(): Promise<Bill[]> {
