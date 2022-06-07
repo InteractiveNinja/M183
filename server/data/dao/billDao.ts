@@ -18,4 +18,17 @@ export class BillDao implements DaoInterface<Bill, BillDefinition> {
   findById(id: number | string): Promise<Bill | null> {
     return Bill.findByPk(id);
   }
+
+  destroy(id: number | string): Promise<void> {
+    return Bill.findByPk(id).then((user) => {
+      if (user) {
+        return user.destroy();
+      }
+      return Promise.reject();
+    });
+  }
+
+  update(toUpdate: BillDefinition): Promise<void> {
+    return Promise.resolve(undefined);
+  }
 }

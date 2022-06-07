@@ -25,4 +25,17 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
   findById(id: number | string): Promise<User | null> {
     return User.findByPk(id, { include: Bill });
   }
+
+  destroy(id: number | string): Promise<void> {
+    return User.findByPk(id).then((user) => {
+      if (user) {
+        return user.destroy();
+      }
+      return Promise.reject();
+    });
+  }
+
+  update(toUpdate: UserDefinition): Promise<void> {
+    return Promise.resolve(undefined);
+  }
 }

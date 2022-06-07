@@ -38,9 +38,9 @@ apiRoutes.get('/bill/:id', (req, res) => {
 
 apiRoutes.post('/create/bill', (req, res) => {
   // todo adds checking for fields
-  const billDefinition: BillDefinition = req.body;
+  const billData: BillDefinition = req.body;
   billDao
-    .create(billDefinition)
+    .create(billData)
     .then(() => {
       res.sendStatus(200);
       return;
@@ -48,6 +48,16 @@ apiRoutes.post('/create/bill', (req, res) => {
     .catch(() => {
       res.sendStatus(400);
     });
+});
+
+apiRoutes.delete('/delete/bill/:id', (req, res) => {
+  const { id } = req.params;
+  billDao
+    .destroy(id)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => res.sendStatus(404));
 });
 
 apiRoutes.get('/users', (req, res) => {
@@ -75,9 +85,23 @@ apiRoutes.get('/user/:id', (req, res) => {
 apiRoutes.post('/create/user', (req, res) => {
   // todo adds checking for fields
   const usersData: UserDefinition = req.body;
-  userDao.create(usersData).then(() => {
-    res.sendStatus(200);
-    return;
-  });
-  res.sendStatus(400);
+  userDao
+    .create(usersData)
+    .then(() => {
+      res.sendStatus(200);
+      return;
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
+
+apiRoutes.delete('/delete/user/:id', (req, res) => {
+  const { id } = req.params;
+  userDao
+    .destroy(id)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => res.sendStatus(404));
 });
