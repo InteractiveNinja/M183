@@ -26,6 +26,13 @@ export class SequelizeFactory {
   }
 
   private syncModels() {
+    /**
+     * Ich definiere hier die beziehungen, hier sollten spätestens die Modelle instanziiert sein
+     */
+    const user = this.sequelize.model('User');
+    const bill = this.sequelize.model('Bill');
+    user.hasMany(bill);
+    bill.belongsTo(user);
     this.sequelize
       .sync()
       .then(() => {
