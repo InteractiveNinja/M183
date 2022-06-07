@@ -16,7 +16,7 @@ export class BillDao implements DaoInterface<Bill, BillDefinition> {
     return Bill.findAll().then((bills) => bills);
   }
 
-  findById(id: number): Promise<Bill | null> {
+  findById(id: number | string): Promise<Bill | null> {
     return Bill.findByPk(id);
   }
 }

@@ -18,8 +18,40 @@ apiRoutes.get('/bills', (req, res) => {
   });
 });
 
+apiRoutes.get('/bill/:id', (req, res) => {
+  const { id } = req.params;
+  if (id) {
+    billDao.findById(id).then((bill) => {
+      if (bill == null) {
+        res.sendStatus(404);
+        return;
+      }
+      res.json(bill);
+    });
+    return;
+  }
+
+  res.sendStatus(400);
+});
+
 apiRoutes.get('/users', (req, res) => {
   userDao.findAll().then((users) => {
     res.json(users);
   });
+});
+
+apiRoutes.get('/user/:id', (req, res) => {
+  const { id } = req.params;
+  if (id) {
+    userDao.findById(id).then((user) => {
+      if (user == null) {
+        res.sendStatus(404);
+        return;
+      }
+      res.json(user);
+    });
+    return;
+  }
+
+  res.sendStatus(400);
 });

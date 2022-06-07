@@ -25,7 +25,7 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
     return User.findAll().then((users) => users);
   }
 
-  findById(id: number): Promise<User | null> {
+  findById(id: number | string): Promise<User | null> {
     return User.findByPk(id);
   }
 }
