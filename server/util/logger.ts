@@ -23,6 +23,6 @@ export class Logger {
   }
 
   private logging(logLevel: LOGLEVELS, msg: string) {
-    console.log(`[${logLevel.toString()}] ${msg}`);
+    console.log(`[${LOGLEVELS[logLevel]}] ${msg}`);
   }
 }
