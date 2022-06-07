@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { DaoFactory } from '../data/factory/daoFactory';
+import { UserDefinition } from '../data/dao/userDao';
+import { BillDefinition } from '../data/dao/billDao';
 
 export const apiRoutes = Router();
 
@@ -54,4 +56,28 @@ apiRoutes.get('/user/:id', (req, res) => {
   }
 
   res.sendStatus(400);
+});
+
+apiRoutes.post('/create/user', (req, res) => {
+  // todo adds checking for fields
+  const usersData: UserDefinition = req.body;
+  userDao.create(usersData).then(() => {
+    res.sendStatus(200);
+    return;
+  });
+  res.sendStatus(400);
+});
+
+apiRoutes.post('/create/bill', (req, res) => {
+  // todo adds checking for fields
+  const billDefinition: BillDefinition = req.body;
+  billDao
+    .create(billDefinition)
+    .then(() => {
+      res.sendStatus(200);
+      return;
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
 });
