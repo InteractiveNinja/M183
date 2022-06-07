@@ -3,6 +3,7 @@ import { User } from '../models/user';
 import { Bill } from '../models/bill';
 
 export interface UserDefinition {
+  id?: number;
   username: string;
   password: string;
   firstname: string;
@@ -36,6 +37,9 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
   }
 
   update(toUpdate: UserDefinition): Promise<void> {
-    return Promise.resolve(undefined);
+    const { id } = toUpdate;
+    return User.findByPk(id).then((user) =>
+      user?.update({ ...user, ...toUpdate }).then()
+    );
   }
 }

@@ -2,6 +2,7 @@ import { DaoInterface } from './dao.interface';
 import { Bill } from '../models/bill';
 
 export interface BillDefinition {
+  id?: number;
   amount: number;
   deadline: Date;
   UserId: number;
@@ -29,6 +30,10 @@ export class BillDao implements DaoInterface<Bill, BillDefinition> {
   }
 
   update(toUpdate: BillDefinition): Promise<void> {
-    return Promise.resolve(undefined);
+    const { id } = toUpdate;
+    console.log(`updating ${id}`);
+    return Bill.findByPk(id).then((bill) =>
+      bill?.update({ ...bill, ...toUpdate }).then()
+    );
   }
 }

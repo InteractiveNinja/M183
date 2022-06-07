@@ -60,6 +60,17 @@ apiRoutes.delete('/delete/bill/:id', (req, res) => {
     .catch(() => res.sendStatus(404));
 });
 
+apiRoutes.patch('/update/bill', (req, res) => {
+  // todo fields checking
+  const billData: BillDefinition = req.body;
+  billDao
+    .update(billData)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => res.sendStatus(400));
+});
+
 apiRoutes.get('/users', (req, res) => {
   userDao.findAll().then((users) => {
     res.json(users);
@@ -104,4 +115,15 @@ apiRoutes.delete('/delete/user/:id', (req, res) => {
       res.sendStatus(200);
     })
     .catch(() => res.sendStatus(404));
+});
+
+apiRoutes.patch('/update/user', (req, res) => {
+  // todo fields checking
+  const usersData: UserDefinition = req.body;
+  userDao
+    .update(usersData)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(() => res.sendStatus(400));
 });
