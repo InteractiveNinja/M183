@@ -4,6 +4,7 @@ import { Bill } from '../models/bill';
 export interface BillDefinition {
   amount: number;
   deadline: Date;
+  UserId: number;
 }
 export class BillDao implements DaoInterface<Bill, BillDefinition> {
   create(toCreate: BillDefinition): Promise<boolean> {
