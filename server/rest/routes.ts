@@ -11,6 +11,8 @@ const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
 apiRoutes.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  res.sendStatus(200);
   //todo implements login aka. credentials check
 });
 
