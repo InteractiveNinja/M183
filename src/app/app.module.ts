@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { BillsComponent } from './components/bills/bills.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LoginGuardGuard } from './guards/login-guard.guard';
+import { LoginService } from './service/login.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [LoginService, LoginGuardGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
