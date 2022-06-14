@@ -1,7 +1,9 @@
-<div class="center"><h1>Einloggen</h1>
-<form class="login-form" [formGroup]="loginFormGroup">
-  <input type="text" class="form-control form-control-lg" name="username" [formControlName]="usernameForm" placeholder="Username" id="username">
-  <input type="password" class="form-control form-control-lg" name="password" [formControlName]="passwordForm" placeholder="Password" id="password">
-  <button type="button" class="btn btn-info" (click)="login()">Login</button>
-</form>
+<div class="center"><h1 class="text-center w-100">Login</h1>
+  <form [formGroup]="loginFormGroup" class="login-form">
+    <input [formControlName]="usernameForm" class="form-control form-control-color w-100" id="username" name="username"
+           placeholder="Username" type="text">
+    <input [formControlName]="passwordForm" class="form-control form-control-color w-100" id="password" name="password"
+           placeholder="Password" type="password">
+    <button (click)="login()" class="btn btn-sm btn-primary w-100" type="button">Login</button>
+  </form>
 </div>
