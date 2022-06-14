@@ -1,3 +1,6 @@
 <p>bills works!</p>
 
-{{bills$ |async | json}}
+
+<div *ngIf="(bills$ | async )as bills">
+  <app-bill-view [bills]="bills"></app-bill-view>
+</div>

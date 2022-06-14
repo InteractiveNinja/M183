@@ -1,0 +1,8 @@
+<div *ngIf="bills">
+  <div *ngFor="let bill of bills">
+  <span>{{bill.amount}}</span>
+  <span>{{bill.createdAt}}</span>
+  <span>{{bill.deadline}}</span>
+  <span>{{bill.payed}}</span>
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { LoginGuardGuard } from './guards/login-guard.guard';
 import { LoginService } from './service/login/login.service';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import {BillViewComponent} from "./components/bills/bill-view/bill-view.component";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {HttpClientModule} from "@angular/common/http";
     LoginComponent,
     BillsComponent,
     NotFoundComponent,
+    BillViewComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
