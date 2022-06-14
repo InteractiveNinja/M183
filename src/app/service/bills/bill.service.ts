@@ -13,6 +13,6 @@ export class BillService {
   }
 
   public getAllBillsById(id: number): Observable<BillModel[]> {
-    return this.http.get<BillModel[]>(`${environment.api}/bill/${id}`);
+    return this.http.get<BillModel[]>(`${environment.api}/bills/${id}`);
   }
 }
