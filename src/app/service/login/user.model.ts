@@ -1,4 +1,6 @@
-export interface User{
+import { BillModel } from '../bills/bill.model';
+
+export interface User {
   id: number;
   username: string;
   password: string;
@@ -8,4 +10,5 @@ export interface User{
   address: string;
   city: string;
   job: string;
+  Bills: BillModel[];
 }
