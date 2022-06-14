@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { BillsComponent } from './components/bills/bills.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { LoginGuardGuard } from './guards/login-guard.guard';
+import { LoginGuardGuard } from './guards/login/login-guard.guard';
 import { LoginService } from './service/login/login.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
