@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { DaoFactory } from '../data/factory/daoFactory';
-import { UserDefinition } from '../data/dao/userDao';
-import { BillDefinition } from '../data/dao/billDao';
+import {Router} from 'express';
+import {DaoFactory} from '../data/factory/daoFactory';
+import {UserDefinition} from '../data/dao/userDao';
+import {BillDefinition} from '../data/dao/billDao';
 
 export const apiRoutes = Router();
 
@@ -11,9 +11,14 @@ const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
 apiRoutes.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  res.sendStatus(200);
   //todo implements login aka. credentials check
+  const {username, password} = req.body;
+  console.log(username,password,"trying to login")
+  if (username == 'test' && password == 'test') {
+    res.status(200).json("ok")
+    return;
+  }
+  res.status(401).json("not ok")
 });
 
 apiRoutes.get('/bills', (req, res) => {
@@ -23,7 +28,7 @@ apiRoutes.get('/bills', (req, res) => {
 });
 
 apiRoutes.get('/bill/:id', (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   if (id) {
     billDao.findById(id).then((bill) => {
       if (bill == null) {
@@ -53,7 +58,7 @@ apiRoutes.post('/create/bill', (req, res) => {
 });
 
 apiRoutes.delete('/delete/bill/:id', (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   billDao
     .destroy(id)
     .then(() => {
@@ -80,7 +85,7 @@ apiRoutes.get('/users', (req, res) => {
 });
 
 apiRoutes.get('/user/:id', (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   if (id) {
     userDao.findById(id).then((user) => {
       if (user == null) {
@@ -110,7 +115,7 @@ apiRoutes.post('/create/user', (req, res) => {
 });
 
 apiRoutes.delete('/delete/user/:id', (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   userDao
     .destroy(id)
     .then(() => {
