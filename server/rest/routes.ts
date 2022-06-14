@@ -12,8 +12,8 @@ const billDao = daoFactory.createBillDao();
 
 apiRoutes.post('/login', (req, res) => {
   const {username, password} = req.body;
-  userDao.findBy({where: {username}}).then(user => {
-    if(user && user.checkPassword(password)) {
+  userDao.findOneBy({where: {username}}).then(user => {
+    if (user && user.checkPassword(password)) {
       // consider not returning alles values
       res.status(200).json(user);
       return;
@@ -26,6 +26,18 @@ apiRoutes.get('/bills', (req, res) => {
   billDao.findAll().then((bills) => {
     res.json(bills);
   });
+});
+
+apiRoutes.get('/bills/:userid', (req, res) => {
+  const {userid} = req.params;
+  const userId = parseInt(userid);
+  billDao.findeAllBy({where: {userId}}).then(bills => {
+    if (bills) {
+      res.status(200).json(bills)
+      return
+    }
+    res.status(404).json([])
+  })
 });
 
 apiRoutes.get('/bill/:id', (req, res) => {
