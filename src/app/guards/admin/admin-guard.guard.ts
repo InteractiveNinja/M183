@@ -12,7 +12,7 @@ import { LoginService } from '../../service/login/login.service';
 @Injectable({
   providedIn: 'root',
 })
-export class LoginGuardGuard implements CanActivate {
+export class AdminGuardGuard implements CanActivate {
   constructor(
     private readonly service: LoginService,
     private readonly router: Router
@@ -26,13 +26,14 @@ export class LoginGuardGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.service.isLoggedIn().pipe(
+    return this.service.getUser().pipe(
       map((e) => {
-        if (!e) {
-          this.router.navigateByUrl('/');
+        if (!e || !e.admin) {
+          alert('Du bist nicht berechtigt auf diese Seite zu gehen!');
+          this.router.navigateByUrl('/bills');
           return false;
         }
-        return e;
+        return true;
       })
     );
   }

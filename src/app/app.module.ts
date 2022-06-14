@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BillViewComponent } from './components/bills/bill-view/bill-view.component';
 import { UsersComponent } from './components/users/users.component';
 import { UserViewComponent } from './components/users/bill-view/user-view.component';
+import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
+import { BillService } from './service/bills/bill.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,7 @@ import { UserViewComponent } from './components/users/bill-view/user-view.compon
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [LoginService, LoginGuardGuard],
+  providers: [LoginService, LoginGuardGuard, BillService, AdminGuardGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -10,5 +10,6 @@ export interface User {
   address: string;
   city: string;
   job: string;
+  admin: boolean;
   Bills: BillModel[];
 }
