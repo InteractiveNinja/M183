@@ -1,7 +1,7 @@
 import { DaoInterface } from './dao.interface';
 import { User } from '../models/user';
 import { Bill } from '../models/bill';
-import {Attributes, FindOptions, NonNullFindOptions} from "sequelize";
+import {Attributes, FindOptions, Model, NonNullFindOptions} from "sequelize";
 
 export interface UserDefinition {
   id?: number;
@@ -37,7 +37,7 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
     });
   }
 
-  findBy(query: FindOptions<Attributes<User>>): Promise<User | null> {
+  findOneBy(query: FindOptions<Attributes<User>>): Promise<User | null> {
     return User.findOne(query);
   }
 
@@ -46,5 +46,9 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
     return User.findByPk(id).then((user) =>
       user?.update({ ...user, ...toUpdate }).then()
     );
+  }
+
+  findeAllBy(query: FindOptions<Attributes<Model<User>>>): Promise<User[] | null> {
+    return User.findAll(query)
   }
 }

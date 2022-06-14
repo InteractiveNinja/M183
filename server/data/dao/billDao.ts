@@ -1,6 +1,6 @@
 import { DaoInterface } from './dao.interface';
 import { Bill } from '../models/bill';
-import {Attributes, Model, NonNullFindOptions} from "sequelize";
+import {Attributes, FindOptions, Model, NonNullFindOptions} from "sequelize";
 
 export interface BillDefinition {
   id?: number;
@@ -37,8 +37,12 @@ export class BillDao implements DaoInterface<Bill, BillDefinition> {
     );
   }
 
-  findBy(query: NonNullFindOptions<Attributes<Model<Bill>>>): Promise<Bill | null> {
+  findOneBy(query: FindOptions<Attributes<Model<Bill>>>): Promise<Bill | null> {
     return Bill.findOne(query);
+  }
+
+  findeAllBy(query: FindOptions<Attributes<Model<Bill>>>): Promise<Bill[] | null> {
+    return Bill.findAll(query);
   }
 
 
