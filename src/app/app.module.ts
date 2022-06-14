@@ -8,9 +8,11 @@ import { BillsComponent } from './components/bills/bills.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginGuardGuard } from './guards/login-guard.guard';
 import { LoginService } from './service/login/login.service';
-import {ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
-import {BillViewComponent} from "./components/bills/bill-view/bill-view.component";
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BillViewComponent } from './components/bills/bill-view/bill-view.component';
+import { UsersComponent } from './components/users/users.component';
+import { UserViewComponent } from './components/users/bill-view/user-view.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import {BillViewComponent} from "./components/bills/bill-view/bill-view.componen
     BillsComponent,
     NotFoundComponent,
     BillViewComponent,
+    UsersComponent,
+    UserViewComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [LoginService, LoginGuardGuard],
   bootstrap: [AppComponent],

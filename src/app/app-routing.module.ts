@@ -4,10 +4,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { BillsComponent } from './components/bills/bills.component';
 import { LoginGuardGuard } from './guards/login-guard.guard';
+import { UsersComponent } from './components/users/users.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'bills', canActivate: [LoginGuardGuard], component: BillsComponent },
+  { path: 'users', component: UsersComponent },
   { path: '**', component: NotFoundComponent },
 ];
 
