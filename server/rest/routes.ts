@@ -14,7 +14,8 @@ apiRoutes.post('/login', (req, res) => {
   const {username, password} = req.body;
   userDao.findBy({where: {username}}).then(user => {
     if(user && user.checkPassword(password)) {
-      res.status(200).json("ok")
+      // consider not returning alles values
+      res.status(200).json(user);
       return;
     }
     res.status(401).json("not ok")
