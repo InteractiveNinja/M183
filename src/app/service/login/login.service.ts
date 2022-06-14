@@ -23,7 +23,6 @@ export class LoginService {
         take(1),
         map((e) => {
           if(e.body) this.user$.next(e.body);
-          console.log("user set");
           return true;
         }),
         catchError(() => {
