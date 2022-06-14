@@ -1,7 +1,7 @@
 import { DaoInterface } from './dao.interface';
 import { User } from '../models/user';
 import { Bill } from '../models/bill';
-import {Attributes, FindOptions, Model, NonNullFindOptions} from "sequelize";
+import { Attributes, FindOptions, Model } from 'sequelize';
 
 export interface UserDefinition {
   id?: number;
@@ -21,7 +21,7 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
   }
 
   findAll(): Promise<User[]> {
-    return User.findAll().then((users) => users);
+    return User.findAll({ include: Bill }).then((users) => users);
   }
 
   findById(id: number | string): Promise<User | null> {
@@ -48,7 +48,9 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
     );
   }
 
-  findeAllBy(query: FindOptions<Attributes<Model<User>>>): Promise<User[] | null> {
-    return User.findAll(query)
+  findeAllBy(
+    query: FindOptions<Attributes<Model<User>>>
+  ): Promise<User[] | null> {
+    return User.findAll(query);
   }
 }
