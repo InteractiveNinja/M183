@@ -1,6 +1,7 @@
 import { DaoInterface } from './dao.interface';
 import { User } from '../models/user';
 import { Bill } from '../models/bill';
+import {Attributes, FindOptions, NonNullFindOptions} from "sequelize";
 
 export interface UserDefinition {
   id?: number;
@@ -34,6 +35,10 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
       }
       return Promise.reject();
     });
+  }
+
+  findBy(query: FindOptions<Attributes<User>>): Promise<User | null> {
+    return User.findOne(query);
   }
 
   update(toUpdate: UserDefinition): Promise<void> {
