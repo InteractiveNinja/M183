@@ -1,2 +1,7 @@
 <p>login works!</p>
-{{isLoggedIn$ | async}}
+<form class="login-form" [formGroup]="loginFormGroup">
+  <input type="text" name="username" [formControlName]="usernameForm" placeholder="Username" id="username">
+  <input type="text" name="password" [formControlName]="passwordForm" placeholder="Password" id="password">
+  <button type="button" (click)="login()">Login</button>
+</form>
+

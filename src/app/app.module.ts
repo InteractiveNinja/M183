@@ -8,6 +8,8 @@ import { BillsComponent } from './components/bills/bills.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginGuardGuard } from './guards/login-guard.guard';
 import { LoginService } from './service/login.service';
+import {ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { LoginService } from './service/login.service';
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [LoginService, LoginGuardGuard],
   bootstrap: [AppComponent],
