@@ -26,6 +26,7 @@
     "@angular/router": "~13.3.0",
     "@nguniversal/express-engine": "^13.1.1",
     "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.2.0-beta1",
     "express": "^4.15.2",
     "mariadb": "^3.0.0",
     "pg": "^8.7.3",
