@@ -32,7 +32,6 @@ export class BillDao implements DaoInterface<Bill, BillDefinition> {
 
   update(toUpdate: BillDefinition): Promise<void> {
     const { id } = toUpdate;
-    console.log(`updating ${id}`);
     return Bill.findByPk(id).then((bill) =>
       bill?.update({ ...bill, ...toUpdate }).then()
     );

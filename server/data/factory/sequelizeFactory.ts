@@ -4,19 +4,18 @@ import { Logger } from '../../util/logger';
 
 export class SequelizeFactory {
   private static instance: SequelizeFactory;
-  private logger = Logger.getInstance();
   private sequelize = new Sequelize('bill', 'root', 'docker', {
     host: 'localhost',
     dialect: 'mariadb',
     dialectModule: mariadb,
-    logging: (msg) => this.logger.log(msg),
+    logging: (msg) => Logger.log(msg),
   });
 
   private constructor() {
     this.sequelize
       .authenticate()
       .then(() => {
-        this.logger.log('Verbindung mit der Datenbank aufgebaut!');
+        Logger.log('Verbindung mit der Datenbank aufgebaut!');
         this.syncModels();
       })
       .catch((e) => {
@@ -37,10 +36,10 @@ export class SequelizeFactory {
     this.sequelize
       .sync()
       .then(() => {
-        this.logger.log('Modelle mit der Datenbank gesynced');
+        Logger.log('Modelle mit der Datenbank gesynced');
       })
       .catch(() => {
-        this.logger.log('Modelle mit der Datenbank konnten nicht gesynced');
+        Logger.log('Modelle mit der Datenbank konnten nicht gesynced');
       });
   }
 

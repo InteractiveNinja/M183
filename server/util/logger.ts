@@ -4,25 +4,17 @@ enum LOGLEVELS {
   ERROR,
 }
 export class Logger {
-  private static instance: Logger;
-  private constructor() {}
-
-  public static getInstance() {
-    if (!this.instance) {
-      this.instance = new Logger();
-    }
-
-    return this.instance;
+  private constructor() {
   }
 
-  public log(msg: string) {
+  public static log(msg: string) {
     this.logging(LOGLEVELS.INFO, msg);
   }
-  public warn(msg: string) {
+  public static warn(msg: string) {
     this.logging(LOGLEVELS.WARN, msg);
   }
 
-  private logging(logLevel: LOGLEVELS, msg: string) {
+  private static logging(logLevel: LOGLEVELS, msg: string) {
     console.log(`[${LOGLEVELS[logLevel]}] ${msg}`);
   }
 }
