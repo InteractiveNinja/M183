@@ -11,14 +11,14 @@ const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
 apiRoutes.post('/login', (req, res) => {
-  //todo implements login aka. credentials check
   const {username, password} = req.body;
-  console.log(username,password,"trying to login")
-  if (username == 'test' && password == 'test') {
-    res.status(200).json("ok")
-    return;
-  }
-  res.status(401).json("not ok")
+  userDao.findBy({where: {username}}).then(user => {
+    if(user && user.checkPassword(password)) {
+      res.status(200).json("ok")
+      return;
+    }
+    res.status(401).json("not ok")
+  })
 });
 
 apiRoutes.get('/bills', (req, res) => {
