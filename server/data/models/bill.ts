@@ -8,6 +8,7 @@ export class Bill extends Model {
   declare amount: number;
   declare deadline: Date;
   declare payed: boolean;
+  declare userId: number;
 }
 
 Bill.init(
