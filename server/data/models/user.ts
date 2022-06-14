@@ -25,7 +25,7 @@ export class User extends Model {
   }
 
   public checkPassword(password: string): boolean {
-    return compareSync(this.password, password);
+    return compareSync(password,this.password);
   }
 }
 
