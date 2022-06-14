@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, catchError, map, Observable, of, take} from 'rxjs';
 import {LoginData} from './login.interface';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
+import {environment} from "../../../environments/environment";
 import {User} from "./user.model";
 
 @Injectable({

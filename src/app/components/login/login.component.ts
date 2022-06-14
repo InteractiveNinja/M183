@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {LoginService} from '../../service/login.service';
+import {LoginService} from '../../service/login/login.service';
 import {FormBuilder, Validators} from "@angular/forms";
 import {take} from "rxjs";
 import {Router} from "@angular/router";
