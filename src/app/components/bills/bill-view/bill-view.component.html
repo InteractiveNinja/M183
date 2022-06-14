@@ -1,8 +1,20 @@
-<div *ngIf="bills">
-  <div *ngFor="let bill of bills">
-  <span>{{bill.amount}}</span>
-  <span>{{bill.createdAt}}</span>
-  <span>{{bill.deadline}}</span>
-  <span>{{bill.payed}}</span>
-  </div>
-</div>
+<table class="table table-striped bill"  *ngIf="bills">
+  <thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Menge</th>
+    <th scope="col">Erstellungsdatum</th>
+    <th scope="col">Zahlungsdatum</th>
+    <th scope="col">Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let bill of bills">
+  <th scope="row">{{bill.id}}</th>
+  <td>{{bill.amount | currency:'CHF'}}</td>
+  <td>{{bill.createdAt | date: 'dd.MM.yyyy'}}</td>
+  <td>{{bill.deadline | date: 'dd.MM.yyyy'}}</td>
+  <td class="status" [class.open]="!bill.payed">{{bill.payed ? "Gezahlt": "Offen"}}</td>
+  </tr>
+  </tbody>
+</table>
