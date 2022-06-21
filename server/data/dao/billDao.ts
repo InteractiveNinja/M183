@@ -13,27 +13,27 @@ export interface BillDefinition {
 const sequelize = SequelizeFactory.getInstance().getSequelize();
 
 export class BillDao implements DaoInterface<Bill, BillDefinition> {
-  create(toCreate: BillDefinition): Promise<void> {
-    return sequelize.transaction().then((t) => {
-      return Bill.create({ ...toCreate }, { transaction: t }).then();
+  async create(toCreate: BillDefinition): Promise<void> {
+    return await sequelize.transaction(async (t) => {
+      return await Bill.create({ ...toCreate }, { transaction: t }).then();
     });
   }
 
-  findAll(): Promise<Bill[]> {
-    return sequelize.transaction().then((t) => {
-      return Bill.findAll({ transaction: t }).then((bills) => bills);
+  async findAll(): Promise<Bill[]> {
+    return await sequelize.transaction(async (t) => {
+      return await Bill.findAll({ transaction: t }).then((bills) => bills);
     });
   }
 
-  findById(id: number | string): Promise<Bill | null> {
-    return sequelize.transaction().then((t) => {
-      return Bill.findByPk(id, { transaction: t });
+  async findById(id: number | string): Promise<Bill | null> {
+    return await sequelize.transaction(async (t) => {
+      return await Bill.findByPk(id, { transaction: t });
     });
   }
 
-  destroy(id: number | string): Promise<void> {
-    return sequelize.transaction().then((t) => {
-      return Bill.findByPk(id, { transaction: t }).then((user) => {
+  async destroy(id: number | string): Promise<void> {
+    return await sequelize.transaction(async (t) => {
+      return await Bill.findByPk(id, { transaction: t }).then((user) => {
         if (user) {
           return user.destroy();
         }
@@ -42,26 +42,28 @@ export class BillDao implements DaoInterface<Bill, BillDefinition> {
     });
   }
 
-  update(toUpdate: BillDefinition): Promise<void> {
+  async update(toUpdate: BillDefinition): Promise<void> {
     const { id } = toUpdate;
-    return sequelize.transaction().then((t) => {
-      return Bill.findByPk(id, { transaction: t }).then((bill) =>
+    return await sequelize.transaction(async (t) => {
+      return await Bill.findByPk(id, { transaction: t }).then((bill) =>
         bill?.update({ ...bill, ...toUpdate }).then()
       );
     });
   }
 
-  findOneBy(query: FindOptions<Attributes<Model<Bill>>>): Promise<Bill | null> {
-    return sequelize.transaction().then((t) => {
-      return Bill.findOne({ ...query, transaction: t });
+  async findOneBy(
+    query: FindOptions<Attributes<Model<Bill>>>
+  ): Promise<Bill | null> {
+    return await sequelize.transaction(async (t) => {
+      return await Bill.findOne({ ...query, transaction: t });
     });
   }
 
-  findeAllBy(
+  async findeAllBy(
     query: FindOptions<Attributes<Model<Bill>>>
   ): Promise<Bill[] | null> {
-    return sequelize.transaction().then((t) => {
-      return Bill.findAll({ ...query, transaction: t });
+    return await sequelize.transaction(async (t) => {
+      return await Bill.findAll({ ...query, transaction: t });
     });
   }
 }
