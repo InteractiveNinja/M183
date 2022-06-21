@@ -19,9 +19,9 @@ export interface UserDefinition {
 const sequelize = SequelizeFactory.getInstance().getSequelize();
 
 export class UserDao implements DaoInterface<User, UserDefinition> {
-  create(user: UserDefinition): Promise<void> {
-    return sequelize.transaction().then((t) => {
-      return User.create({ ...user }, { transaction: t }).then();
+  async create(user: UserDefinition): Promise<void> {
+    await sequelize.transaction(async (t) => {
+      await User.create({ ...user }, { transaction: t });
     });
   }
 
