@@ -2,6 +2,7 @@ import { DaoInterface } from './dao.interface';
 import { User } from '../models/user';
 import { Bill } from '../models/bill';
 import { Attributes, FindOptions, Model } from 'sequelize';
+import { SequelizeFactory } from '../factory/sequelizeFactory';
 
 export interface UserDefinition {
   id?: number;
@@ -15,42 +16,60 @@ export interface UserDefinition {
   job: string;
 }
 
+const sequelize = SequelizeFactory.getInstance().getSequelize();
+
 export class UserDao implements DaoInterface<User, UserDefinition> {
   create(user: UserDefinition): Promise<void> {
-    return User.create({ ...user }).then();
+    return sequelize.transaction().then((t) => {
+      return User.create({ ...user }, { transaction: t }).then();
+    });
   }
 
   findAll(): Promise<User[]> {
-    return User.findAll({ include: Bill }).then((users) => users);
+    return sequelize.transaction().then((t) => {
+      return User.findAll({ include: Bill, transaction: t }).then(
+        (users) => users
+      );
+    });
   }
 
   findById(id: number | string): Promise<User | null> {
-    return User.findByPk(id, { include: Bill });
+    return sequelize.transaction().then((t) => {
+      return User.findByPk(id, { include: Bill, transaction: t });
+    });
   }
 
   destroy(id: number | string): Promise<void> {
-    return User.findByPk(id).then((user) => {
-      if (user) {
-        return user.destroy();
-      }
-      return Promise.reject();
+    return sequelize.transaction().then((t) => {
+      return User.findByPk(id, { transaction: t }).then((user) => {
+        if (user) {
+          return user.destroy();
+        }
+        return Promise.reject();
+      });
     });
   }
 
   findOneBy(query: FindOptions<Attributes<User>>): Promise<User | null> {
-    return User.findOne(query);
+    return sequelize.transaction().then((t) => {
+      return User.findOne({ ...query, transaction: t });
+    });
   }
 
   update(toUpdate: UserDefinition): Promise<void> {
     const { id } = toUpdate;
-    return User.findByPk(id).then((user) =>
-      user?.update({ ...user, ...toUpdate }).then()
-    );
+    return sequelize.transaction().then((t) => {
+      return User.findByPk(id, { transaction: t }).then((user) =>
+        user?.update({ ...user, ...toUpdate }).then()
+      );
+    });
   }
 
   findeAllBy(
     query: FindOptions<Attributes<Model<User>>>
   ): Promise<User[] | null> {
-    return User.findAll(query);
+    return sequelize.transaction().then((t) => {
+      return User.findAll({ ...query, transaction: t });
+    });
   }
 }
