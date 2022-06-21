@@ -1,25 +1,44 @@
-import {Router} from 'express';
-import {DaoFactory} from '../data/factory/daoFactory';
-import {UserDefinition} from '../data/dao/userDao';
-import {BillDefinition} from '../data/dao/billDao';
+import { Router } from 'express';
+import { DaoFactory } from '../data/factory/daoFactory';
+import { UserDefinition } from '../data/dao/userDao';
+import { BillDefinition } from '../data/dao/billDao';
+import { v4 as generateUUID } from 'uuid';
+import * as cookieparser from 'cookie-parser';
 
 export const apiRoutes = Router();
-
 const daoFactory = DaoFactory.getInstance();
 
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
+let cookies: string[] = [];
+
 apiRoutes.post('/login', (req, res) => {
-  const {username, password} = req.body;
-  userDao.findOneBy({where: {username}}).then(user => {
+  const { username, password } = req.body;
+  userDao.findOneBy({ where: { username } }).then((user) => {
     if (user && user.checkPassword(password)) {
-      // consider not returning alles values
-      res.status(200).json(user);
+      const cookie = generateUUID();
+      res.status(200).cookie('uuid', cookie, { maxAge: 360000 }).json(user);
+      cookies.push(cookie);
       return;
     }
-    res.status(401).json("not ok")
-  })
+    res.status(401).json('not ok');
+  });
+});
+
+apiRoutes.post('/logout', (req, res) => {
+  res.clearCookie('uuid').json('done');
+});
+
+apiRoutes.use(cookieparser());
+apiRoutes.use((req, res, next) => {
+  const { uuid } = req.cookies;
+  const found = cookies.findIndex((cookie) => cookie == uuid) != -1;
+  if (!found) {
+    res.clearCookie('uuid').status(401).json('no session');
+    return;
+  }
+  next();
 });
 
 apiRoutes.get('/bills', (req, res) => {
@@ -29,19 +48,19 @@ apiRoutes.get('/bills', (req, res) => {
 });
 
 apiRoutes.get('/bills/:userid', (req, res) => {
-  const {userid} = req.params;
+  const { userid } = req.params;
   const userId = parseInt(userid);
-  billDao.findeAllBy({where: {userId}}).then(bills => {
+  billDao.findeAllBy({ where: { userId } }).then((bills) => {
     if (bills) {
-      res.status(200).json(bills)
-      return
+      res.status(200).json(bills);
+      return;
     }
-    res.status(404).json([])
-  })
+    res.status(404).json([]);
+  });
 });
 
 apiRoutes.get('/bill/:id', (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   if (id) {
     billDao.findById(id).then((bill) => {
       if (bill == null) {
@@ -71,7 +90,7 @@ apiRoutes.post('/create/bill', (req, res) => {
 });
 
 apiRoutes.delete('/delete/bill/:id', (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   billDao
     .destroy(id)
     .then(() => {
@@ -98,7 +117,7 @@ apiRoutes.get('/users', (req, res) => {
 });
 
 apiRoutes.get('/user/:id', (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   if (id) {
     userDao.findById(id).then((user) => {
       if (user == null) {
@@ -128,7 +147,7 @@ apiRoutes.post('/create/user', (req, res) => {
 });
 
 apiRoutes.delete('/delete/user/:id', (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   userDao
     .destroy(id)
     .then(() => {
