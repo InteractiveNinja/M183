@@ -25,7 +25,7 @@ export class User extends Model {
   }
 
   public checkPassword(password: string): boolean {
-    return compareSync(password,this.password);
+    return compareSync(password, this.password);
   }
 }
 
@@ -77,5 +77,6 @@ User.init(
     // Other model options go here
     sequelize, // We need to pass the connection instance
     modelName: 'User', // We need to choose the model name
+    version: true,
   }
 );

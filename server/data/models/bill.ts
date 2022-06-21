@@ -35,5 +35,6 @@ Bill.init(
     // Other model options go here
     sequelize, // We need to pass the connection instance
     modelName: 'Bill', // We need to choose the model name
+    version: true,
   }
 );
