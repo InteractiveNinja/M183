@@ -11,19 +11,34 @@ const daoFactory = DaoFactory.getInstance();
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
-let cookies: string[] = [];
+let cookies = new Map();
 
 apiRoutes.post('/login', (req, res) => {
   const { username, password } = req.body;
   userDao.findOneBy({ where: { username } }).then((user) => {
     if (user && user.checkPassword(password)) {
       const cookie = generateUUID();
-      res.status(200).cookie('uuid', cookie, { maxAge: 360000 }).json(user);
-      cookies.push(cookie);
+      res
+        .status(200)
+        .cookie('uuid', cookie, { maxAge: 360000 })
+        .json({ user, cookie });
+      cookies.set(cookie, user);
       return;
     }
     res.status(401).json('not ok');
   });
+});
+
+apiRoutes.post('/session', (req, res) => {
+  const { session } = req.body;
+  const found = cookies.get(session) != undefined;
+  if (found) {
+    const user = cookies.get(session);
+    res.status(200).json(user);
+    return;
+  }
+
+  res.clearCookie('uuid').status(401).json('not ok');
 });
 
 apiRoutes.post('/logout', (req, res) => {
@@ -33,7 +48,7 @@ apiRoutes.post('/logout', (req, res) => {
 apiRoutes.use(cookieparser());
 apiRoutes.use((req, res, next) => {
   const { uuid } = req.cookies;
-  const found = cookies.findIndex((cookie) => cookie == uuid) != -1;
+  const found = cookies.get(uuid) != undefined;
   if (!found) {
     res.clearCookie('uuid').status(401).json('no session');
     return;
