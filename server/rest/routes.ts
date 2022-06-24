@@ -5,6 +5,7 @@ import { BillDefinition } from '../data/dao/billDao';
 import { v4 as generateUUID } from 'uuid';
 import * as cookieparser from 'cookie-parser';
 
+
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
 
@@ -12,6 +13,20 @@ const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
 let cookies = new Map();
+
+apiRoutes.post('/create/user', (req, res) => {
+  // todo adds checking for fields
+  const usersData: UserDefinition = req.body;
+  userDao
+    .create(usersData)
+    .then(() => {
+      res.sendStatus(200);
+      return;
+    })
+    .catch(() => {
+      res.sendStatus(400);
+    });
+});
 
 apiRoutes.post('/login', (req, res) => {
   const { username, password } = req.body;
@@ -147,19 +162,7 @@ apiRoutes.get('/user/:id', (req, res) => {
   res.sendStatus(400);
 });
 
-apiRoutes.post('/create/user', (req, res) => {
-  // todo adds checking for fields
-  const usersData: UserDefinition = req.body;
-  userDao
-    .create(usersData)
-    .then(() => {
-      res.sendStatus(200);
-      return;
-    })
-    .catch(() => {
-      res.sendStatus(400);
-    });
-});
+
 
 apiRoutes.delete('/delete/user/:id', (req, res) => {
   const { id } = req.params;
