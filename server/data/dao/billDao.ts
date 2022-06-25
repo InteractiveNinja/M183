@@ -42,12 +42,14 @@ export class BillDao implements DaoInterface<Bill, BillDefinition> {
     });
   }
 
-  async update(toUpdate: BillDefinition): Promise<void> {
+  async update(toUpdate: BillDefinition): Promise<number> {
     const { id } = toUpdate;
     return await sequelize.transaction(async (t) => {
-      return await Bill.findByPk(id, { transaction: t }).then((bill) =>
-        bill?.update({ ...bill, ...toUpdate }).then()
+      let promise = await Bill.update(
+        { ...toUpdate },
+        { where: { id }, transaction: t }
       );
+      return promise[0];
     });
   }
 

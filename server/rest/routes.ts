@@ -133,8 +133,12 @@ apiRoutes.patch('/update/bill', (req, res) => {
   const billData: BillDefinition = req.body;
   billDao
     .update(billData)
-    .then(() => {
-      res.sendStatus(200);
+    .then((e) => {
+      if (e >= 1) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(400);
+      }
     })
     .catch(() => res.sendStatus(400));
 });
@@ -176,8 +180,12 @@ apiRoutes.patch('/update/user', (req, res) => {
   const usersData: UserDefinition = req.body;
   userDao
     .update(usersData)
-    .then(() => {
-      res.sendStatus(200);
+    .then((e) => {
+      if (e >= 1) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(400);
+      }
     })
     .catch(() => res.sendStatus(400));
 });

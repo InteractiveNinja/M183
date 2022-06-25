@@ -56,12 +56,14 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
     });
   }
 
-  async update(toUpdate: UserDefinition): Promise<void> {
-    const { id } = toUpdate;
+  async update(toUpdate: UserDefinition): Promise<number> {
+    const { id, job } = toUpdate;
     return await sequelize.transaction(async (t) => {
-      return await User.findByPk(id, { transaction: t }).then((user) =>
-        user?.update({ ...user, ...toUpdate }).then()
+      let promise = await User.update(
+        { job },
+        { where: { id }, transaction: t }
       );
+      return promise[0];
     });
   }
 
