@@ -1,9 +1,8 @@
 
-<div *ngIf="user$ | async as user">{{user | json}}</div>
+<div *ngIf="user | async as user">{{user | json}}</div>
 <div>
-<form [formGroup]="editFormGroup" class="login-form">
   <input
-    [formControlName]="jobForm"
+    [formControl]="jobForm"
     class="form-control form-control-color w-100"
     id="job"
     name="text"
@@ -17,5 +16,4 @@
   >
     Login
   </button>
-</form>
 </div>
