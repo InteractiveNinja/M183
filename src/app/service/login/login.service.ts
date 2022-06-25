@@ -4,6 +4,7 @@ import { LoginData } from './login.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { User } from './user.model';
+import { LocalstorageService } from '../localstorage/localstorage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ export class LoginService {
   private isLoggedIn$ = new BehaviorSubject<boolean>(false);
   private user$ = new BehaviorSubject<User | undefined>(undefined);
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly localstorageService: LocalstorageService
+  ) {}
 
   public login(credentials: LoginData): Observable<boolean> {
     return this.http
@@ -40,7 +44,8 @@ export class LoginService {
   }
 
   public checkSession(): Observable<boolean> {
-    const cookie = window.sessionStorage.getItem(this.COOKIE_KEY) ?? undefined;
+    const cookie =
+      this.localstorageService.getItem(this.COOKIE_KEY) ?? undefined;
     if (!cookie) {
       return of(false);
     }
@@ -76,19 +81,25 @@ export class LoginService {
 
   private readonly COOKIE_KEY = 'key';
 
-  private saveIntoStorage(cookie: string) {
-    window.sessionStorage.setItem(this.COOKIE_KEY, cookie);
-  }
-
   private setLoginState(state: { user: User; cookie: string }) {
-    this.saveIntoStorage(state.cookie);
+    this.localstorageService.setItem(this.COOKIE_KEY, state.cookie);
     this.user$.next(state.user);
     this.isLoggedIn$.next(true);
+  }
+  private setLogoutState(): void {
+    this.localstorageService.clear();
+    this.user$.next(undefined);
+    this.isLoggedIn$.next(false);
   }
 
   public logout(): Observable<boolean> {
     return this.http
       .post(`${environment.api}/logout`, {}, { observe: 'response' })
-      .pipe(map((e) => e.ok));
+      .pipe(
+        map((e) => {
+          this.setLogoutState();
+          return e.ok;
+        })
+      );
   }
 }

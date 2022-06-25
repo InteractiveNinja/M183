@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { LoginService } from './service/login/login.service';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +10,16 @@ import { take } from 'rxjs';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  static isBrowser = new BehaviorSubject<boolean | undefined>(undefined);
+  public user$ = this.service.getUser();
+
   constructor(
+    @Inject(PLATFORM_ID) private platformId: any,
     private readonly service: LoginService,
     private readonly router: Router
-  ) {}
-
-  public user$ = this.service.getUser();
+  ) {
+    AppComponent.isBrowser.next(isPlatformBrowser(platformId));
+  }
 
   public logout(): void {
     this.service
