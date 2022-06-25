@@ -11,8 +11,8 @@ import { LoginService } from './service/login/login.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BillViewComponent } from './components/bills/bill-view/bill-view.component';
-import { UsersComponent } from './components/users/users.component';
-import { UserViewComponent } from './components/users/bill-view/user-view.component';
+import { UsersViewComponent } from './components/users/users-view.component';
+import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
 import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 import { BillService } from './service/bills/bill.service';
 
@@ -23,8 +23,8 @@ import { BillService } from './service/bills/bill.service';
     BillsComponent,
     NotFoundComponent,
     BillViewComponent,
-    UsersComponent,
-    UserViewComponent,
+    UsersViewComponent,
+    UserDetailComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

@@ -3,11 +3,11 @@ import { User } from '../../../service/login/user.model';
 import { BillModel } from '../../../service/bills/bill.model';
 
 @Component({
-  selector: 'app-user-view',
-  templateUrl: './user-view.component.html',
-  styleUrls: ['./user-view.component.scss'],
+  selector: 'app-user-detail',
+  templateUrl: './user-detail.component.html',
+  styleUrls: ['./user-detail.component.scss'],
 })
-export class UserViewComponent {
+export class UserDetailComponent {
   @Input()
   public users: User[] | undefined;
 

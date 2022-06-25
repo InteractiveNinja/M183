@@ -4,7 +4,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { BillsComponent } from './components/bills/bills.component';
 import { LoginGuardGuard } from './guards/login/login-guard.guard';
-import { UsersComponent } from './components/users/users.component';
+import { UsersViewComponent } from './components/users/users-view.component';
 import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 
 const routes: Routes = [
@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: 'users',
     canActivate: [LoginGuardGuard, AdminGuardGuard],
-    component: UsersComponent,
+    component: UsersViewComponent,
   },
   { path: '**', component: NotFoundComponent },
 ];
