@@ -6,6 +6,7 @@ import { BillsViewComponent } from './components/bills/bills-view.component';
 import { LoginGuardGuard } from './guards/login/login-guard.guard';
 import { UsersViewComponent } from './components/users/users-view.component';
 import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
+import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -18,6 +19,11 @@ const routes: Routes = [
     path: 'users',
     canActivate: [LoginGuardGuard, AdminGuardGuard],
     component: UsersViewComponent,
+  },
+  {
+    path: 'edit',
+    canActivate: [LoginGuardGuard],
+    component: UserEditComponent,
   },
   { path: '**', component: NotFoundComponent },
 ];

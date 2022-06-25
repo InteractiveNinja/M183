@@ -15,6 +15,7 @@ import { UsersViewComponent } from './components/users/users-view.component';
 import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
 import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 import { BillService } from './service/bills/bill.service';
+import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { BillService } from './service/bills/bill.service';
     BillDetailComponent,
     UsersViewComponent,
     UserDetailComponent,
+    UserEditComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
