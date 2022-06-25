@@ -1,4 +1,4 @@
 <h1>Benutzer</h1>
-<div *ngIf="(users | async )as users" class="user-view">
+<div *ngIf="users | async as users" class="user-view">
   <app-user-view [users]="users"></app-user-view>
 </div>

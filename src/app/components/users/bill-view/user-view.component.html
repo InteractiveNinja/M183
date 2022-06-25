@@ -1,26 +1,28 @@
 <table *ngIf="users" class="table table-striped user">
   <thead>
-  <tr>
-    <th scope="col">ID</th>
-    <th scope="col">Vorname</th>
-    <th scope="col">Nachname</th>
-    <th scope="col">Geschlecht</th>
-    <th scope="col">Job</th>
-    <th scope="col">Adresse</th>
-    <th scope="col">Stadt</th>
-    <th scope="col">Offene Rechnungen</th>
-  </tr>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Vorname</th>
+      <th scope="col">Nachname</th>
+      <th scope="col">Geschlecht</th>
+      <th scope="col">Job</th>
+      <th scope="col">Adresse</th>
+      <th scope="col">Stadt</th>
+      <th scope="col">Offene Rechnungen</th>
+    </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let user of users">
-    <th scope="row">{{user.id}}</th>
-    <td>{{user.firstname }}</td>
-    <td>{{user.lastname }}</td>
-    <td>{{user.gender }}</td>
-    <td>{{user.job }}</td>
-    <td>{{user.address}}</td>
-    <td>{{user.city}}</td>
-    <td [class.open]="calculateOpenInvoices(user.Bills) >= 1">{{calculateOpenInvoices(user.Bills)}}</td>
-  </tr>
+    <tr *ngFor="let user of users">
+      <th scope="row">{{ user.id }}</th>
+      <td>{{ user.firstname }}</td>
+      <td>{{ user.lastname }}</td>
+      <td>{{ user.gender }}</td>
+      <td>{{ user.job }}</td>
+      <td>{{ user.address }}</td>
+      <td>{{ user.city }}</td>
+      <td [class.open]="calculateOpenInvoices(user.Bills) >= 1">
+        {{ calculateOpenInvoices(user.Bills) }}
+      </td>
+    </tr>
   </tbody>
 </table>

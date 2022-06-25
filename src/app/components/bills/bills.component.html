@@ -1,4 +1,4 @@
 <h1>Rechnungen</h1>
-<div class="bill-view" *ngIf="(bills$ | async )as bills">
+<div class="bill-view" *ngIf="bills$ | async as bills">
   <app-bill-view [bills]="bills"></app-bill-view>
 </div>
