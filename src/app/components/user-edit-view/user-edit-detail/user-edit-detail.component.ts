@@ -3,6 +3,7 @@ import { User } from '../../../service/login/user.model';
 import { FormControl, Validators } from '@angular/forms';
 import { UserEditService } from '../../../service/user-edit/user-edit.service';
 import { take } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-edit-detail',
@@ -10,9 +11,17 @@ import { take } from 'rxjs';
   styleUrls: ['./user-edit-detail.component.scss'],
 })
 export class UserEditDetailComponent {
-  public jobForm = new FormControl('', [Validators.required]);
+  public jobForm = new FormControl('Test123', [Validators.required]);
 
-  constructor(private readonly userEditService: UserEditService) {}
+  constructor(
+    private readonly userEditService: UserEditService,
+    private readonly router: Router
+  ) {
+    this.userEditService
+      .getUser()
+      .pipe(take(1))
+      .subscribe((user) => this.jobForm.patchValue(user?.job));
+  }
   @Input()
   public user?: User | null;
 
@@ -25,6 +34,7 @@ export class UserEditDetailComponent {
         .subscribe((e) => {
           if (e) {
             alert('Änderung gespeichert');
+            this.router.navigateByUrl('/bills');
           }
         });
     }

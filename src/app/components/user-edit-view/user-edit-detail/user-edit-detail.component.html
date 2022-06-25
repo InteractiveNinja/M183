@@ -1,6 +1,5 @@
-<div *ngIf="user">{{user | json}}</div>
-<div class="center">
-  <h1>Berufsbezeichnung ändern</h1>
+<div *ngIf="user" class="center">
+  <h1>Berufsbezeichnung ändern von {{user.username}}</h1>
   <div class="w-50">
     <input
       [formControl]="jobForm"
