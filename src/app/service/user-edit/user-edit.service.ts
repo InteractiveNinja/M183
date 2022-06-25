@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, map, Observable, take } from 'rxjs';
 import { User } from '../login/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -25,5 +25,20 @@ export class UserEditService {
         this.userToEdit$.next(user);
         this.router.navigateByUrl('/edit');
       });
+  }
+
+  public updateUser(user: User): Observable<boolean> {
+    return this.http
+      .patch(
+        `${environment.api}/update/user`,
+        { ...user },
+        { responseType: 'text', observe: 'response' }
+      )
+      .pipe(
+        map((e) => {
+          if (e.ok) this.userToEdit$.next(user);
+          return e.ok;
+        })
+      );
   }
 }

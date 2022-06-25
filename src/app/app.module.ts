@@ -16,8 +16,7 @@ import { UserDetailComponent } from './components/users/user-detail/user-detail.
 import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 import { BillService } from './service/bills/bill.service';
 import { UserEditDetailComponent } from './components/user-edit-view/user-edit-detail/user-edit-detail.component';
-import { UserEditViewComponent } from './components/user-edit-view/user/user-edit-view.component';
-import { UserEditAdminViewComponent } from './components/user-edit-view/admin/user-edit-admin-view.component';
+import { UserEditViewComponent } from './components/user-edit-view/user-edit/user-edit-view.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,7 @@ import { UserEditAdminViewComponent } from './components/user-edit-view/admin/us
     UserDetailComponent,
     UserEditDetailComponent,
     UserEditViewComponent,
-    UserEditAdminViewComponent,
+    UserEditViewComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

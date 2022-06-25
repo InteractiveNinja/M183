@@ -8,9 +8,8 @@ describe('UserEditViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserEditViewComponent ]
-    })
-    .compileComponents();
+      declarations: [UserEditViewComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

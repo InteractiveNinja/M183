@@ -4,8 +4,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { BillsViewComponent } from './components/bills/bills-view.component';
 import { UsersViewComponent } from './components/users/users-view.component';
-import { UserEditViewComponent } from './components/user-edit-view/user/user-edit-view.component';
-import { UserEditAdminViewComponent } from './components/user-edit-view/admin/user-edit-admin-view.component';
+import { UserEditViewComponent } from './components/user-edit-view/user-edit/user-edit-view.component';
 import { LoginGuardGuard } from './guards/login/login-guard.guard';
 import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 
@@ -28,7 +27,8 @@ const routes: Routes = [
   },
   {
     path: 'edit',
-    component: UserEditAdminViewComponent,
+    canActivate: [LoginGuardGuard],
+    component: UserEditViewComponent,
   },
   { path: '**', component: NotFoundComponent },
 ];

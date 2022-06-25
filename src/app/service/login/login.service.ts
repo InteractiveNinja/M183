@@ -75,6 +75,10 @@ export class LoginService {
     return this.user$;
   }
 
+  public setUser(user: User) {
+    this.user$.next(user);
+  }
+
   public isLoggedIn(): Observable<boolean> {
     return this.isLoggedIn$;
   }
