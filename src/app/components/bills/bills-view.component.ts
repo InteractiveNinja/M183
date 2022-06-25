@@ -5,11 +5,11 @@ import { Observable, take } from 'rxjs';
 import { BillModel } from '../../service/bills/bill.model';
 
 @Component({
-  selector: 'app-bills',
-  templateUrl: './bills.component.html',
-  styleUrls: ['./bills.component.scss'],
+  selector: 'app-bills-view',
+  templateUrl: './bills-view.component.html',
+  styleUrls: ['./bills-view.component.scss'],
 })
-export class BillsComponent {
+export class BillsViewComponent {
   constructor(
     private readonly service: LoginService,
     private readonly billService: BillService

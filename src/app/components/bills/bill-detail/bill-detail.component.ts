@@ -2,11 +2,11 @@ import { Component, Input } from '@angular/core';
 import { BillModel } from '../../../service/bills/bill.model';
 
 @Component({
-  selector: 'app-bill-view',
-  templateUrl: './bill-view.component.html',
-  styleUrls: ['./bill-view.component.scss'],
+  selector: 'app-bill-detail',
+  templateUrl: './bill-detail.component.html',
+  styleUrls: ['./bill-detail.component.scss'],
 })
-export class BillViewComponent {
+export class BillDetailComponent {
   constructor() {}
 
   @Input()
