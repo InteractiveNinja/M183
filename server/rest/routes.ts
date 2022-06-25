@@ -5,7 +5,6 @@ import { BillDefinition } from '../data/dao/billDao';
 import { v4 as generateUUID } from 'uuid';
 import * as cookieparser from 'cookie-parser';
 
-
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
 
@@ -161,8 +160,6 @@ apiRoutes.get('/user/:id', (req, res) => {
 
   res.sendStatus(400);
 });
-
-
 
 apiRoutes.delete('/delete/user/:id', (req, res) => {
   const { id } = req.params;

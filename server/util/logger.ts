@@ -4,8 +4,7 @@ enum LOGLEVELS {
   ERROR,
 }
 export class Logger {
-  private constructor() {
-  }
+  private constructor() {}
 
   public static log(msg: string) {
     this.logging(LOGLEVELS.INFO, msg);
