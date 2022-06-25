@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { BillsViewComponent } from './components/bills/bills-view.component';
-import { LoginGuardGuard } from './guards/login/login-guard.guard';
 import { UsersViewComponent } from './components/users/users-view.component';
-import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 import { UserEditViewComponent } from './components/user-edit-view/user/user-edit-view.component';
+import { UserEditAdminViewComponent } from './components/user-edit-view/admin/user-edit-admin-view.component';
+import { LoginGuardGuard } from './guards/login/login-guard.guard';
+import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -24,6 +25,10 @@ const routes: Routes = [
     path: 'users',
     canActivate: [LoginGuardGuard, AdminGuardGuard],
     component: UsersViewComponent,
+  },
+  {
+    path: 'edit',
+    component: UserEditAdminViewComponent,
   },
   { path: '**', component: NotFoundComponent },
 ];
