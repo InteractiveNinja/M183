@@ -16,6 +16,18 @@ export class AppComponent implements OnInit {
 
   public user$ = this.service.getUser();
 
+  public logout(): void {
+    this.service
+      .logout()
+      .pipe(take(1))
+      .subscribe((redirect) => {
+        if (redirect) {
+          alert('Du bist jetzt ausgeloggt!');
+          this.router.navigateByUrl('');
+        }
+      });
+  }
+
   ngOnInit(): void {
     this.service
       .checkSession()
