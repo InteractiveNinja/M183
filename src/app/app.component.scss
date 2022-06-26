@@ -1,14 +1,14 @@
-nav{
+nav {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
-  a{
+  a {
     margin: 0 0.5em;
     text-decoration: none;
     color: white;
   }
-  a:hover{
+  a:hover {
     color: gray;
   }
 }

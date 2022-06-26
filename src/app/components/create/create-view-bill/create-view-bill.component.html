@@ -15,14 +15,19 @@
     id="deadline"
   />
   <label for="tenant">Schuldner</label>
-  <select class="form-control form-control-color w-100"
-          id="tenant" *ngIf="users$ | async as users" [formControlName]="userForm">
+  <select
+    class="form-control form-control-color w-100"
+    id="tenant"
+    *ngIf="users$ | async as users"
+    [formControlName]="userForm"
+  >
     <option value="" disabled selected>Wähle einen Benutzer aus</option>
     <option *ngFor="let user of users" [value]="user.id">
-      {{user.id}} | {{user.firstname}} {{user.lastname}}
+      {{ user.id }} | {{ user.firstname }} {{ user.lastname }}
     </option>
   </select>
-  <button [disabled]="billForm.invalid"
+  <button
+    [disabled]="billForm.invalid"
     (click)="createBill()"
     class="btn btn-sm btn-primary w-100"
     type="button"
