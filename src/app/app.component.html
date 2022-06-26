@@ -3,8 +3,8 @@
     <a *ngIf="user.admin" routerLink="users">Zur Benutzerübersicht</a>
     <a *ngIf="user.admin" routerLink="create">Erstellungs Menu</a>
     <a *ngIf="user" routerLink="bills">Zur den Rechnungen</a>
-    <a *ngIf="user" (click)="edit()">Edit User</a>
-    <a *ngIf="user" (click)="logout()">Logout</a>
+    <a *ngIf="user" (click)="edit()">Eigenen Nutzer bearbeiten</a>
+    <a *ngIf="user" (click)="logout()">Ausloggen</a>
   </nav>
 </ng-container>
 <router-outlet></router-outlet>
