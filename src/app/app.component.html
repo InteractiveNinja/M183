@@ -1,8 +1,10 @@
 <ng-container *ngIf="user$ | async as user">
+  <nav>
   <a *ngIf="user.admin" routerLink="users">Zur Benutzerübersicht</a>
   <a *ngIf="user.admin" routerLink="create">Erstellungs Menu</a>
   <a *ngIf="user" routerLink="bills">Zur den Rechnungen</a>
-  <button *ngIf="user" (click)="edit()">Edit User</button>
-  <button *ngIf="user" (click)="logout()">Logout</button>
+  <a *ngIf="user" (click)="edit()">Edit User</a>
+  <a *ngIf="user" (click)="logout()">Logout</a>
+  </nav>
 </ng-container>
 <router-outlet></router-outlet>
