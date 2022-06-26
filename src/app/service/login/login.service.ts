@@ -66,6 +66,7 @@ export class LoginService {
           return e.ok;
         }),
         catchError(() => {
+          this.setLogoutState();
           return of(false);
         })
       );
