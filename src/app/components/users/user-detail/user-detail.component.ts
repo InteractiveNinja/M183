@@ -14,11 +14,12 @@ export class UserDetailComponent {
 
   constructor(private readonly userEditService: UserEditService) {}
 
-  public calculateOpenInvoices(bills: BillModel[]): number {
+  public calculateOpenInvoices(bills: BillModel[] | undefined): number {
+    if (!bills) return 0;
     return bills.map((bill) => bill.payed).filter((payed) => !payed).length;
   }
 
-  public editUser(id: number) {
+  public editUser(id: number | undefined) {
     this.userEditService.loadUser(id);
   }
 }

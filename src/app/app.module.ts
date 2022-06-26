@@ -17,6 +17,9 @@ import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
 import { BillService } from './service/bills/bill.service';
 import { UserEditDetailComponent } from './components/user-edit-view/user-edit-detail/user-edit-detail.component';
 import { UserEditViewComponent } from './components/user-edit-view/user-edit/user-edit-view.component';
+import { CreateViewComponent } from './components/create/create-view/create-view.component';
+import { CreateViewBillComponent } from './components/create/create-view-bill/create-view-bill.component';
+import { CreateViewUserComponent } from './components/create/create-view-user/create-view-user.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,9 @@ import { UserEditViewComponent } from './components/user-edit-view/user-edit/use
     UserEditDetailComponent,
     UserEditViewComponent,
     UserEditViewComponent,
+    CreateViewComponent,
+    CreateViewBillComponent,
+    CreateViewUserComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

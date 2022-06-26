@@ -1,0 +1,32 @@
+<form [formGroup]="billForm" class="bill-form">
+  <label for="amount">Rechnungsmenge</label>
+  <input
+    [formControlName]="amountForm"
+    class="form-control form-control-color w-100"
+    placeholder="Rechnungsmenge"
+    type="text"
+    id="amount"
+  />
+  <label for="deadline">Fälligkeitsdatum</label>
+  <input
+    [formControlName]="deadlineForm"
+    class="form-control form-control-color w-100"
+    type="date"
+    id="deadline"
+  />
+  <label for="tenant">Schuldner</label>
+  <select class="form-control form-control-color w-100"
+          id="tenant" *ngIf="users$ | async as users" [formControlName]="userForm">
+    <option value="" disabled selected>Wähle einen Benutzer aus</option>
+    <option *ngFor="let user of users" [value]="user.id">
+      {{user.id}} | {{user.firstname}} {{user.lastname}}
+    </option>
+  </select>
+  <button [disabled]="billForm.invalid"
+    (click)="createBill()"
+    class="btn btn-sm btn-primary w-100"
+    type="button"
+  >
+    Rechnung erstellen
+  </button>
+</form>

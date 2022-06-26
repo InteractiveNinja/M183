@@ -1,0 +1,84 @@
+<form [formGroup]="userForm" class="user-form">
+  <label for="username">Benutzername</label>
+  <input
+    [formControlName]="usernameForm"
+    class="form-control form-control-color w-100"
+    id="username"
+    placeholder="Benutzername"
+    type="text"
+  /> <label for="password">Passwort</label>
+  <input
+    [formControlName]="passwordForm"
+    class="form-control form-control-color w-100"
+    id="password"
+    placeholder="Password"
+    type="password"
+  /> <label for="firstname">Vorname</label>
+  <input
+    [formControlName]="firstnameForm"
+    class="form-control form-control-color w-100"
+    id="firstname"
+    placeholder="Vorname"
+    type="text"
+  /> <label for="lastname">Nachname</label>
+  <input
+    [formControlName]="lastnameForm"
+    class="form-control form-control-color w-100"
+    id="lastname"
+    placeholder="Nachname"
+    type="text"
+  />
+  <label for="gender">Geschlecht</label>
+  <div>
+    <div class="form-check" id="gender">
+      <input [formControlName]="genderForm" class="form-check-input"
+             id="male" type="radio" value="M">
+      <label class="form-check-label" for="male">
+        Männlich
+      </label>
+    </div>
+    <div class="form-check">
+      <input [formControlName]="genderForm" class="form-check-input" id="female" type="radio" value="W">
+      <label class="form-check-label" for="female">
+        Weiblich
+      </label>
+    </div>
+  </div>
+  <label for="address">Addresse</label>
+  <input
+    [formControlName]="addressForm"
+    class="form-control form-control-color w-100"
+    id="address"
+    placeholder="Addresse"
+    type="text"
+  />
+  <label for="city">Stadt</label>
+  <input
+    [formControlName]="cityForm"
+    class="form-control form-control-color w-100"
+    id="city"
+    placeholder="Stadt"
+    type="text"
+  />
+  <label for="job">Beruf</label>
+  <input
+    [formControlName]="jobForm"
+    class="form-control form-control-color w-100"
+    id="job"
+    placeholder="Job"
+    type="text"
+  />
+  <div class="form-check">
+    <input [formControlName]="adminForm" class="form-check-input" id="admin" type="checkbox" >
+    <label class="form-check-label" for="admin">
+      Admin
+    </label>
+  </div>
+  <button (click)="createUser()"
+          [disabled]="userForm.invalid"
+          class="btn btn-sm btn-primary w-100"
+          type="button"
+  >
+    Benutzer erstellen
+  </button>
+</form>

@@ -1,7 +1,7 @@
 import { BillModel } from '../bills/bill.model';
 
 export interface User {
-  id: number;
+  id?: number;
   username: string;
   password: string;
   firstname: string;
@@ -11,5 +11,5 @@ export interface User {
   city: string;
   job: string;
   admin: boolean;
-  Bills: BillModel[];
+  Bills?: BillModel[];
 }

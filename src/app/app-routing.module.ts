@@ -7,6 +7,9 @@ import { UsersViewComponent } from './components/users/users-view.component';
 import { UserEditViewComponent } from './components/user-edit-view/user-edit/user-edit-view.component';
 import { LoginGuardGuard } from './guards/login/login-guard.guard';
 import { AdminGuardGuard } from './guards/admin/admin-guard.guard';
+import { CreateViewComponent } from './components/create/create-view/create-view.component';
+import { CreateViewBillComponent } from './components/create/create-view-bill/create-view-bill.component';
+import { CreateViewUserComponent } from './components/create/create-view-user/create-view-user.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -29,6 +32,23 @@ const routes: Routes = [
     path: 'edit',
     canActivate: [LoginGuardGuard],
     component: UserEditViewComponent,
+  },
+  {
+    path: 'create',
+    canActivate: [LoginGuardGuard],
+    component: CreateViewComponent,
+    children: [
+      {
+        path: 'bill',
+        component: CreateViewBillComponent,
+        canActivate: [LoginGuardGuard],
+      },
+      {
+        path: 'user',
+        component: CreateViewUserComponent,
+        canActivate: [LoginGuardGuard],
+      },
+    ],
   },
   { path: '**', component: NotFoundComponent },
 ];

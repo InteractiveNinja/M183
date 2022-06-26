@@ -1,9 +1,9 @@
 export interface BillModel {
-  id: number;
+  id?: number;
   amount: number;
   deadline: Date;
   payed: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   UserId: number;
 }

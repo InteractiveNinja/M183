@@ -17,7 +17,7 @@ export class UserEditService {
     return this.userToEdit$.asObservable();
   }
 
-  public loadUser(userId: number) {
+  public loadUser(userId: number | undefined) {
     this.http
       .get<User>(`${environment.api}/user/${userId}`, { observe: 'body' })
       .pipe(take(1))
