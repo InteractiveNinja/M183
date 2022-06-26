@@ -3,3 +3,14 @@
     color: red;
   }
 }
+
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: gray;
+  }
+}
+
+

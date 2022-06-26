@@ -17,10 +17,10 @@
       <td>{{ user.firstname }}</td>
       <td>{{ user.lastname }}</td>
       <td>{{ user.gender }}</td>
-      <td>{{ user.job }}</td>
+      <td class="clickable" (click)="editUser(user.id)">{{ user.job }}</td>
       <td>{{ user.address }}</td>
       <td>{{ user.city }}</td>
-      <td [class.open]="calculateOpenInvoices(user.Bills) >= 1" (click)="editUser(user.id)">
+      <td [class.open]="calculateOpenInvoices(user.Bills) >= 1">
         {{ calculateOpenInvoices(user.Bills) }}
       </td>
     </tr>
