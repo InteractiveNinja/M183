@@ -184,7 +184,7 @@ apiRoutes.patch('/update/user', (req, res) => {
       if (e >= 1) {
         res.sendStatus(200);
       } else {
-        res.sendStatus(400);
+        res.sendStatus(409);
       }
     })
     .catch(() => res.sendStatus(400));

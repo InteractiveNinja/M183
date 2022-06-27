@@ -14,6 +14,7 @@ export interface UserDefinition {
   address: string;
   city: string;
   job: string;
+  version?: number;
 }
 
 const sequelize = SequelizeFactory.getInstance().getSequelize();
@@ -57,11 +58,11 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
   }
 
   async update(toUpdate: UserDefinition): Promise<number> {
-    const { id, job } = toUpdate;
+    const { id, job, version } = toUpdate;
     return await sequelize.transaction(async (t) => {
       let promise = await User.update(
         { job },
-        { where: { id }, transaction: t }
+        { where: { id, version }, transaction: t }
       );
       return promise[0];
     });
