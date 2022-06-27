@@ -12,4 +12,5 @@ export interface User {
   job: string;
   admin: boolean;
   Bills?: BillModel[];
+  version?: number;
 }

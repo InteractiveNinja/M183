@@ -1,6 +1,7 @@
 import { DataTypes, Model, SaveOptions } from 'sequelize';
 import { SequelizeFactory } from '../factory/sequelizeFactory';
 import { compareSync, hashSync } from 'bcryptjs';
+
 const sequelize = SequelizeFactory.getInstance().getSequelize();
 export class User extends Model {
   declare id: number;
@@ -13,6 +14,7 @@ export class User extends Model {
   declare city: string;
   declare job: string;
   declare admin: boolean;
+  declare version: number;
 
   override save(options?: SaveOptions<any>): Promise<this> {
     this.encryptPassword();

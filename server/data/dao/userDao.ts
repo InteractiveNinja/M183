@@ -60,6 +60,10 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
   async update(toUpdate: UserDefinition): Promise<number> {
     const { id, job, version } = toUpdate;
     return await sequelize.transaction(async (t) => {
+      /**
+       * Version sollte eigentlich erhöht werden bei der Transaktion, wegen bug nicht möglich
+       * https://github.com/sequelize/sequelize/issues/7831
+       */
       let promise = await User.update(
         { job },
         { where: { id, version }, transaction: t }

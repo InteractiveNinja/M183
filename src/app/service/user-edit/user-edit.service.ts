@@ -28,10 +28,12 @@ export class UserEditService {
   }
 
   public updateUser(user: User): Observable<boolean> {
+    console.log('updating with', user);
+    const { job, id, version } = user;
     return this.http
       .patch(
         `${environment.api}/update/user`,
-        { ...user },
+        { job, id, version },
         { responseType: 'text', observe: 'response' }
       )
       .pipe(

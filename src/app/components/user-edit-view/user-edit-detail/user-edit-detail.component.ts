@@ -35,6 +35,11 @@ export class UserEditDetailComponent {
           if (e) {
             alert('Änderung gespeichert');
             this.router.navigateByUrl('/bills');
+          } else {
+            alert(
+              'Änderungen konnten nicht gespeichert werden, die User Daten sind nicht aktuell.'
+            );
+            this.userEditService.loadUser(this.user?.id);
           }
         });
     }
