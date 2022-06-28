@@ -49,7 +49,6 @@ export class CreateViewUserComponent {
       job,
       admin,
     } = this.userForm.value;
-    console.log(this.userForm.value);
     this.usersService
       .createUser({
         lastname,
