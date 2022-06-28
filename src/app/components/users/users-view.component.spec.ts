@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UsersViewComponent } from './users-view.component';
+import { CommonTestingModule } from '../../test/common-testing/common-testing.module';
 
 describe('BillsComponent', () => {
   let component: UsersViewComponent;
@@ -9,6 +10,7 @@ describe('BillsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UsersViewComponent],
+      imports: [CommonTestingModule],
     }).compileComponents();
   });
 
