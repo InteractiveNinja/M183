@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "4c1a215c-a225-4d2c-a35c-7203e21225f4",
+		"name": "BillSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Bills",
+			"item": [
+				{
+					"name": "List all Bills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/bills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"bills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Select Bill by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/bill/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"bill",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Select Bills by UserID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/bills/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"bills",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \"amount\": 2000,\n\"deadline\": \"2022-06-07\",\n\"payed\": 0,\n\"UserId\":1 }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/create/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"create",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Bill",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \"amount\": 2000,\n\"deadline\": \"2022-06-07 08:26:01\",\n\"UserId\":1 }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/delete/bill/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"delete",
+								"bill",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bills",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"amount\": 5000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/update/bill",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"update",
+								"bill"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "List all Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Select User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"job\": \"test\",\n    \"version\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/update/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"update",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\"username\": \"Hans\",\n  \"password\": \"Hansi123\",\n  \"firstname\":\"Hans\" ,\n  \"lastname\":\"Peter\" ,\n  \"gender\":\"M\" ,\n  \"address\":\"Baslerstrasse\", \n  \"city\":\"Basel\" ,\n  \"job\":\"-\" ,\n  \"admin\":0}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/create/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"create",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\"username\": \"Hans\",\n  \"password\": \"Hansi123\",\n  \"firstname\":\"Hans\" ,\n  \"lastname\":\"Peter\" ,\n  \"gender\":\"M\" ,\n  \"address\":\"Baslerstrasse\", \n  \"city\":\"Basel\" ,\n  \"job\":\"-\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/delete/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"delete",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"password\":\"Hansi123\",\"username\": \"Hans\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4200/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4200",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login session",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"session\":\"d702f8a1-3ae9-4064-96dc-db039154f9ee\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4200/api/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4200",
+					"path": [
+						"api",
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"password\":\"Hansi123\",\"username\": \"Hans\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4200/api/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4200",
+					"path": [
+						"api",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
