@@ -1,9 +1,11 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { DaoFactory } from '../data/factory/daoFactory';
 import { UserDefinition } from '../data/dao/userDao';
 import { BillDefinition } from '../data/dao/billDao';
 import { v4 as generateUUID } from 'uuid';
 import * as cookieparser from 'cookie-parser';
+import { checkSchema } from 'express-validator';
+import { checkError, userSchema } from './validatorSchemas';
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
@@ -13,19 +15,18 @@ const billDao = daoFactory.createBillDao();
 
 let cookies = new Map();
 
-apiRoutes.post('/create/user', (req, res) => {
-  // todo adds checking for fields
-  const usersData: UserDefinition = req.body;
-  userDao
-    .create(usersData)
-    .then(() => {
-      res.sendStatus(200);
-      return;
-    })
-    .catch(() => {
-      res.sendStatus(400);
-    });
-});
+apiRoutes.post(
+  '/create/user',
+  checkSchema(userSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const usersData: UserDefinition = req.body;
+    return userDao
+      .create(usersData)
+      .then(() => res.sendStatus(200))
+      .catch(() => res.sendStatus(400));
+  }
+);
 
 apiRoutes.post('/login', (req, res) => {
   const { username, password } = req.body;
