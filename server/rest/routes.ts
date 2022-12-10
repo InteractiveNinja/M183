@@ -5,7 +5,12 @@ import { BillDefinition } from '../data/dao/billDao';
 import { v4 as generateUUID } from 'uuid';
 import * as cookieparser from 'cookie-parser';
 import { checkSchema } from 'express-validator';
-import { checkError, loginSchema, userSchema } from './validatorSchemas';
+import {
+  checkError,
+  idSchema,
+  loginSchema,
+  userSchema,
+} from './validatorSchemas';
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
@@ -33,14 +38,14 @@ apiRoutes.post(
   checkSchema(loginSchema),
   checkError,
   (req: Request, res: Response) => {
-    const { username, password } = req.body;
-    userDao.findOneBy({ where: { username } }).then((user) => {
+    const {username, password} = req.body;
+    userDao.findOneBy({where: {username}}).then((user) => {
       if (user && user.checkPassword(password)) {
         const cookie = generateUUID();
         res
           .status(200)
-          .cookie('uuid', cookie, { maxAge: 360000 })
-          .json({ user, cookie });
+          .cookie('uuid', cookie, {maxAge: 360000})
+          .json({user, cookie});
         cookies.set(cookie, user);
         return;
       }
@@ -53,7 +58,7 @@ apiRoutes.post(
  * TODO: Should be Removed with when Cookies are really implemented
  */
 apiRoutes.post('/session', (req, res) => {
-  const { session } = req.body;
+  const {session} = req.body;
   const found = cookies.get(session) != undefined;
   if (found) {
     const user = cookies.get(session);
@@ -70,7 +75,7 @@ apiRoutes.post('/logout', (req, res) => {
 
 apiRoutes.use(cookieparser());
 apiRoutes.use((req, res, next) => {
-  const { uuid } = req.cookies;
+  const {uuid} = req.cookies;
   const found = cookies.get(uuid) != undefined;
   if (!found) {
     res.clearCookie('uuid').status(401).json('no session');
@@ -85,33 +90,43 @@ apiRoutes.get('/bills', (req, res) => {
   });
 });
 
-apiRoutes.get('/bills/:userid', (req, res) => {
-  const { userid } = req.params;
-  const userId = parseInt(userid);
-  billDao.findeAllBy({ where: { userId } }).then((bills) => {
-    if (bills) {
-      res.status(200).json(bills);
-      return;
-    }
-    res.status(404).json([]);
-  });
-});
-
-apiRoutes.get('/bill/:id', (req, res) => {
-  const { id } = req.params;
-  if (id) {
-    billDao.findById(id).then((bill) => {
-      if (bill == null) {
-        res.sendStatus(404);
+apiRoutes.get(
+  '/bills/:id',
+  checkSchema(idSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const {id} = req.params;
+    const userId = parseInt(id);
+    billDao.findeAllBy({where: {userId}}).then((bills) => {
+      if (bills) {
+        res.status(200).json(bills);
         return;
       }
-      res.json(bill);
+      res.status(404).json([]);
     });
-    return;
   }
+);
 
-  res.sendStatus(400);
-});
+apiRoutes.get(
+  '/bill/:id',
+  checkSchema(idSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const {id} = req.params;
+    if (id) {
+      billDao.findById(id).then((bill) => {
+        if (bill == null) {
+          res.sendStatus(404);
+          return;
+        }
+        res.json(bill);
+      });
+      return;
+    }
+
+    res.sendStatus(400);
+  }
+);
 
 apiRoutes.post('/create/bill', (req, res) => {
   // todo adds checking for fields
@@ -127,15 +142,20 @@ apiRoutes.post('/create/bill', (req, res) => {
     });
 });
 
-apiRoutes.delete('/delete/bill/:id', (req, res) => {
-  const { id } = req.params;
-  billDao
-    .destroy(id)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch(() => res.sendStatus(404));
-});
+apiRoutes.delete(
+  '/delete/bill/:id',
+  checkSchema(idSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const {id} = req.params;
+    billDao
+      .destroy(id)
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch(() => res.sendStatus(404));
+  }
+);
 
 apiRoutes.patch('/update/bill', (req, res) => {
   // todo fields checking
@@ -158,31 +178,37 @@ apiRoutes.get('/users', (req, res) => {
   });
 });
 
-apiRoutes.get('/user/:id', (req, res) => {
-  const { id } = req.params;
-  if (id) {
-    userDao.findById(id).then((user) => {
-      if (user == null) {
-        res.sendStatus(404);
-        return;
-      }
-      res.json(user);
-    });
-    return;
-  }
+apiRoutes.get('/user/:id',
+  checkSchema(idSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const {id} = req.params;
+    if (id) {
+      userDao.findById(id).then((user) => {
+        if (user == null) {
+          res.sendStatus(404);
+          return;
+        }
+        res.json(user);
+      });
+      return;
+    }
 
-  res.sendStatus(400);
-});
+    res.sendStatus(400);
+  });
 
-apiRoutes.delete('/delete/user/:id', (req, res) => {
-  const { id } = req.params;
-  userDao
-    .destroy(id)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch(() => res.sendStatus(404));
-});
+apiRoutes.delete('/delete/user/:id',
+  checkSchema(idSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const {id} = req.params;
+    userDao
+      .destroy(id)
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch(() => res.sendStatus(404));
+  });
 
 apiRoutes.patch('/update/user', (req, res) => {
   // todo fields checking

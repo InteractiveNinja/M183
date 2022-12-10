@@ -176,6 +176,19 @@ export const loginSchema: Schema = {
   },
 };
 
+export const idSchema: Schema = {
+  id: {
+    in: ['params'],
+    exists: {
+      errorMessage: 'Id is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isInt: true,
+  },
+};
+
 /**
  * Checks if any Validation errors exists, returns 400 error or does nothing
  * @param req
