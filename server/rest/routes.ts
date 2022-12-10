@@ -223,17 +223,19 @@ apiRoutes.delete(
   }
 );
 
-apiRoutes.patch('/update/user', (req, res) => {
-  // todo fields checking
-  const usersData: UserDefinition = req.body;
-  userDao
-    .update(usersData)
-    .then((e) => {
-      if (e >= 1) {
-        res.sendStatus(200);
-      } else {
-        res.sendStatus(409);
-      }
-    })
-    .catch(() => res.sendStatus(400));
-});
+apiRoutes.patch('/update/user',
+  checkSchema(userSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const usersData: UserDefinition = req.body;
+    userDao
+      .update(usersData)
+      .then((e) => {
+        if (e >= 1) {
+          res.sendStatus(200);
+        } else {
+          res.sendStatus(409);
+        }
+      })
+      .catch(() => res.sendStatus(400));
+  });
