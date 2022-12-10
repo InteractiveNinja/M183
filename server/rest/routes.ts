@@ -6,6 +6,7 @@ import { v4 as generateUUID } from 'uuid';
 import * as cookieparser from 'cookie-parser';
 import { checkSchema } from 'express-validator';
 import {
+  billSchema,
   checkError,
   idSchema,
   loginSchema,
@@ -128,19 +129,23 @@ apiRoutes.get(
   }
 );
 
-apiRoutes.post('/create/bill', (req, res) => {
-  // todo adds checking for fields
-  const billData: BillDefinition = req.body;
-  billDao
-    .create(billData)
-    .then(() => {
-      res.sendStatus(200);
-      return;
-    })
-    .catch(() => {
-      res.sendStatus(400);
-    });
-});
+apiRoutes.post(
+  '/create/bill',
+  checkSchema(billSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const billData: BillDefinition = req.body;
+    billDao
+      .create(billData)
+      .then(() => {
+        res.sendStatus(200);
+        return;
+      })
+      .catch(() => {
+        res.sendStatus(400);
+      });
+  }
+);
 
 apiRoutes.delete(
   '/delete/bill/:id',
@@ -157,20 +162,24 @@ apiRoutes.delete(
   }
 );
 
-apiRoutes.patch('/update/bill', (req, res) => {
-  // todo fields checking
-  const billData: BillDefinition = req.body;
-  billDao
-    .update(billData)
-    .then((e) => {
-      if (e >= 1) {
-        res.sendStatus(200);
-      } else {
-        res.sendStatus(400);
-      }
-    })
-    .catch(() => res.sendStatus(400));
-});
+apiRoutes.patch(
+  '/update/bill',
+  checkSchema(billSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const billData: BillDefinition = req.body;
+    billDao
+      .update(billData)
+      .then((e) => {
+        if (e >= 1) {
+          res.sendStatus(200);
+        } else {
+          res.sendStatus(400);
+        }
+      })
+      .catch(() => res.sendStatus(400));
+  }
+);
 
 apiRoutes.get('/users', (req, res) => {
   userDao.findAll().then((users) => {
@@ -178,7 +187,8 @@ apiRoutes.get('/users', (req, res) => {
   });
 });
 
-apiRoutes.get('/user/:id',
+apiRoutes.get(
+  '/user/:id',
   checkSchema(idSchema),
   checkError,
   (req: Request, res: Response) => {
@@ -195,9 +205,11 @@ apiRoutes.get('/user/:id',
     }
 
     res.sendStatus(400);
-  });
+  }
+);
 
-apiRoutes.delete('/delete/user/:id',
+apiRoutes.delete(
+  '/delete/user/:id',
   checkSchema(idSchema),
   checkError,
   (req: Request, res: Response) => {
@@ -208,7 +220,8 @@ apiRoutes.delete('/delete/user/:id',
         res.sendStatus(200);
       })
       .catch(() => res.sendStatus(404));
-  });
+  }
+);
 
 apiRoutes.patch('/update/user', (req, res) => {
   // todo fields checking

@@ -189,6 +189,45 @@ export const idSchema: Schema = {
   },
 };
 
+export const billSchema: Schema = {
+  amount: {
+    exists: {
+      errorMessage: 'Amount is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isNumeric: true,
+  },
+  deadline: {
+    exists: {
+      errorMessage: 'Deadline is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isDate: true,
+  },
+  payed: {
+    exists: {
+      errorMessage: 'payed is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isBoolean: true,
+  },
+  UserId: {
+    exists: {
+      errorMessage: 'Userid is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isNumeric: true,
+  },
+};
+
 /**
  * Checks if any Validation errors exists, returns 400 error or does nothing
  * @param req
