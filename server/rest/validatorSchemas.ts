@@ -139,6 +139,43 @@ export const userSchema: Schema = {
   },
 };
 
+export const loginSchema: Schema = {
+  username: {
+    exists: {
+      errorMessage: 'Username is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isLength: {
+      errorMessage: 'Username should be between 6 and 16 chars.',
+      options: {
+        min: 6,
+        max: 16,
+      },
+    },
+    isString: true,
+    escape: true,
+  },
+  password: {
+    exists: {
+      errorMessage: 'Password is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isLength: {
+      errorMessage: 'Password should be between 8 and 64 chars.',
+      options: {
+        min: 8,
+        max: 64,
+      },
+    },
+    isString: true,
+    escape: true,
+  },
+};
+
 /**
  * Checks if any Validation errors exists, returns 400 error or does nothing
  * @param req

@@ -5,7 +5,7 @@ import { BillDefinition } from '../data/dao/billDao';
 import { v4 as generateUUID } from 'uuid';
 import * as cookieparser from 'cookie-parser';
 import { checkSchema } from 'express-validator';
-import { checkError, userSchema } from './validatorSchemas';
+import { checkError, loginSchema, userSchema } from './validatorSchemas';
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
@@ -28,21 +28,26 @@ apiRoutes.post(
   }
 );
 
-apiRoutes.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  userDao.findOneBy({ where: { username } }).then((user) => {
-    if (user && user.checkPassword(password)) {
-      const cookie = generateUUID();
-      res
-        .status(200)
-        .cookie('uuid', cookie, { maxAge: 360000 })
-        .json({ user, cookie });
-      cookies.set(cookie, user);
-      return;
-    }
-    res.status(401).json('not ok');
-  });
-});
+apiRoutes.post(
+  '/login',
+  checkSchema(loginSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const { username, password } = req.body;
+    userDao.findOneBy({ where: { username } }).then((user) => {
+      if (user && user.checkPassword(password)) {
+        const cookie = generateUUID();
+        res
+          .status(200)
+          .cookie('uuid', cookie, { maxAge: 360000 })
+          .json({ user, cookie });
+        cookies.set(cookie, user);
+        return;
+      }
+      res.status(401).json('not ok');
+    });
+  }
+);
 
 apiRoutes.post('/session', (req, res) => {
   const { session } = req.body;
