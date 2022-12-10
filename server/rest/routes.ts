@@ -48,7 +48,10 @@ apiRoutes.post(
     });
   }
 );
-
+/**
+ * Used to Validate a Session
+ * TODO: Should be Removed with when Cookies are really implemented
+ */
 apiRoutes.post('/session', (req, res) => {
   const { session } = req.body;
   const found = cookies.get(session) != undefined;
