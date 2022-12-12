@@ -16,7 +16,7 @@ export class UserDetailComponent {
 
   public calculateOpenInvoices(bills: BillModel[] | undefined): number {
     if (!bills) return 0;
-    return bills.map((bill) => bill.payed).filter((payed) => !payed).length;
+    return bills.map((bill) => bill.paid).filter((paid) => !paid).length;
   }
 
   public editUser(id: number | undefined) {

@@ -35,7 +35,7 @@ export class CreateViewBillComponent {
   createBill() {
     const { amount, deadline, user } = this.billForm.value;
     this.billService
-      .createBill({ amount, deadline, UserId: user, payed: false })
+      .createBill({ amount, deadline, UserId: user, paid: false })
       .pipe(take(1))
       .subscribe((done) => {
         if (done) {
