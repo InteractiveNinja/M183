@@ -7,7 +7,7 @@ export class Bill extends Model {
   declare id: number;
   declare amount: number;
   declare deadline: Date;
-  declare payed: boolean;
+  declare paid: boolean;
   declare userId: number;
 }
 
@@ -26,7 +26,7 @@ Bill.init(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    payed: {
+    paid: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },

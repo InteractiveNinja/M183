@@ -77,7 +77,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \"amount\": 2000,\n\"deadline\": \"2022-06-07\",\n\"payed\": 0,\n\"UserId\":1 }",
+							"raw": "{  \"amount\": 2000,\n\"deadline\": \"2022-06-07\",\n\"paid\": 0,\n\"UserId\":1 }",
 							"options": {
 								"raw": {
 									"language": "json"
