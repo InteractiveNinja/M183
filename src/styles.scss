@@ -14,3 +14,12 @@ app-root {
   margin: 0;
   font-family: "Roboto", sans-serif;
 }
+
+a {
+  margin: 0 0.5em;
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  color: gray;
+}
