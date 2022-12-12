@@ -1,7 +1,7 @@
 import { Schema, validationResult } from 'express-validator';
 import { NextFunction, Request, Response } from 'express';
 
-export const userSchema: Schema = {
+export const loginSchema: Schema = {
   username: {
     exists: {
       errorMessage: 'Username is not set',
@@ -10,10 +10,10 @@ export const userSchema: Schema = {
       },
     },
     isLength: {
-      errorMessage: 'Username should be between 6 and 12 chars.',
+      errorMessage: 'Username should be between 6 and 16 chars.',
       options: {
         min: 6,
-        max: 12,
+        max: 16,
       },
     },
     isString: true,
@@ -34,7 +34,12 @@ export const userSchema: Schema = {
       },
     },
     isString: true,
+    escape: true,
   },
+};
+
+export const userSchema: Schema = {
+  ...loginSchema,
   firstname: {
     exists: {
       errorMessage: 'Firstname is not set',
