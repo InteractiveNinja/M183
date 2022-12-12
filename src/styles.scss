@@ -15,11 +15,15 @@ app-root {
   font-family: "Roboto", sans-serif;
 }
 
-a {
-  margin: 0 0.5em;
-  text-decoration: none;
-  color: black;
+nav {
+  span {
+    margin: 0 0.5em;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    &:hover {
+      color: gray;
+    }
+  }
 }
-a:hover {
-  color: gray;
-}
+
