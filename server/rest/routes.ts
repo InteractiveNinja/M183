@@ -39,14 +39,14 @@ apiRoutes.post(
   checkSchema(loginSchema),
   checkError,
   (req: Request, res: Response) => {
-    const {username, password} = req.body;
-    userDao.findOneBy({where: {username}}).then((user) => {
+    const { username, password } = req.body;
+    userDao.findOneBy({ where: { username } }).then((user) => {
       if (user && user.checkPassword(password)) {
         const cookie = generateUUID();
         res
           .status(200)
-          .cookie('uuid', cookie, {maxAge: 360000})
-          .json({user, cookie});
+          .cookie('uuid', cookie, { maxAge: 360000 })
+          .json({ user, cookie });
         cookies.set(cookie, user);
         return;
       }
@@ -59,7 +59,7 @@ apiRoutes.post(
  * TODO: Should be Removed with when Cookies are really implemented
  */
 apiRoutes.post('/session', (req, res) => {
-  const {session} = req.body;
+  const { session } = req.body;
   const found = cookies.get(session) != undefined;
   if (found) {
     const user = cookies.get(session);
@@ -76,7 +76,7 @@ apiRoutes.post('/logout', (req, res) => {
 
 apiRoutes.use(cookieparser());
 apiRoutes.use((req, res, next) => {
-  const {uuid} = req.cookies;
+  const { uuid } = req.cookies;
   const found = cookies.get(uuid) != undefined;
   if (!found) {
     res.clearCookie('uuid').status(401).json('no session');
@@ -86,9 +86,7 @@ apiRoutes.use((req, res, next) => {
 });
 
 apiRoutes.get('/bills', (req, res) => {
-  billDao.findAll().then((bills) => {
-    res.json(bills);
-  });
+  return billDao.findAll().then((bills) => res.json(bills));
 });
 
 apiRoutes.get(
@@ -96,15 +94,16 @@ apiRoutes.get(
   checkSchema(idSchema),
   checkError,
   (req: Request, res: Response) => {
-    const {id} = req.params;
-    const userId = parseInt(id);
-    billDao.findeAllBy({where: {userId}}).then((bills) => {
-      if (bills) {
-        res.status(200).json(bills);
-        return;
-      }
-      res.status(404).json([]);
-    });
+    const { id } = req.params;
+    return billDao
+      .findeAllBy({ where: { userId: id } })
+      .then((bills) => {
+        if (bills) {
+          return res.json(bills);
+        }
+        return res.json([]);
+      })
+      .catch(() => res.sendStatus(500));
   }
 );
 
@@ -113,19 +112,18 @@ apiRoutes.get(
   checkSchema(idSchema),
   checkError,
   (req: Request, res: Response) => {
-    const {id} = req.params;
-    if (id) {
-      billDao.findById(id).then((bill) => {
+    const { id } = req.params;
+    return billDao
+      .findById(id)
+      .then((bill) => {
         if (bill == null) {
-          res.sendStatus(404);
-          return;
+          return res.sendStatus(404);
         }
-        res.json(bill);
+        return res.json(bill);
+      })
+      .catch(() => {
+        return res.sendStatus(500);
       });
-      return;
-    }
-
-    res.sendStatus(400);
   }
 );
 
@@ -135,14 +133,13 @@ apiRoutes.post(
   checkError,
   (req: Request, res: Response) => {
     const billData: BillDefinition = req.body;
-    billDao
+    return billDao
       .create(billData)
       .then(() => {
-        res.sendStatus(200);
-        return;
+        return res.sendStatus(200);
       })
       .catch(() => {
-        res.sendStatus(400);
+        return res.sendStatus(500);
       });
   }
 );
@@ -152,13 +149,11 @@ apiRoutes.delete(
   checkSchema(idSchema),
   checkError,
   (req: Request, res: Response) => {
-    const {id} = req.params;
-    billDao
+    const { id } = req.params;
+    return billDao
       .destroy(id)
-      .then(() => {
-        res.sendStatus(200);
-      })
-      .catch(() => res.sendStatus(404));
+      .then(() => res.sendStatus(200))
+      .catch(() => res.sendStatus(500));
   }
 );
 
@@ -168,23 +163,17 @@ apiRoutes.patch(
   checkError,
   (req: Request, res: Response) => {
     const billData: BillDefinition = req.body;
-    billDao
+    return billDao
       .update(billData)
-      .then((e) => {
-        if (e >= 1) {
-          res.sendStatus(200);
-        } else {
-          res.sendStatus(400);
-        }
+      .then((changedEntries) => {
+        changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400);
       })
-      .catch(() => res.sendStatus(400));
+      .catch(() => res.sendStatus(500));
   }
 );
 
 apiRoutes.get('/users', (req, res) => {
-  userDao.findAll().then((users) => {
-    res.json(users);
-  });
+  return userDao.findAll().then((users) => res.json(users));
 });
 
 apiRoutes.get(
@@ -192,19 +181,16 @@ apiRoutes.get(
   checkSchema(idSchema),
   checkError,
   (req: Request, res: Response) => {
-    const {id} = req.params;
-    if (id) {
-      userDao.findById(id).then((user) => {
+    const { id } = req.params;
+    return userDao
+      .findById(id)
+      .then((user) => {
         if (user == null) {
-          res.sendStatus(404);
-          return;
+          return res.sendStatus(404);
         }
-        res.json(user);
-      });
-      return;
-    }
-
-    res.sendStatus(400);
+        return res.json(user);
+      })
+      .catch(() => res.sendStatus(500));
   }
 );
 
@@ -213,29 +199,25 @@ apiRoutes.delete(
   checkSchema(idSchema),
   checkError,
   (req: Request, res: Response) => {
-    const {id} = req.params;
-    userDao
+    const { id } = req.params;
+    return userDao
       .destroy(id)
-      .then(() => {
-        res.sendStatus(200);
-      })
+      .then(() => res.sendStatus(200))
       .catch(() => res.sendStatus(404));
   }
 );
 
-apiRoutes.patch('/update/user',
+apiRoutes.patch(
+  '/update/user',
   checkSchema(userSchema),
   checkError,
   (req: Request, res: Response) => {
     const usersData: UserDefinition = req.body;
-    userDao
+    return userDao
       .update(usersData)
-      .then((e) => {
-        if (e >= 1) {
-          res.sendStatus(200);
-        } else {
-          res.sendStatus(409);
-        }
+      .then((changedEntries) => {
+        changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400);
       })
-      .catch(() => res.sendStatus(400));
-  });
+      .catch(() => res.sendStatus(500));
+  }
+);
