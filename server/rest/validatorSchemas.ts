@@ -56,6 +56,10 @@ export const userSchema: Schema = {
     },
     isString: true,
     escape: true,
+    matches: {
+      options: /^([a-z])$/i,
+      errorMessage: 'Not allowed characters used',
+    },
   },
   lastname: {
     exists: {
@@ -73,6 +77,10 @@ export const userSchema: Schema = {
     },
     isString: true,
     escape: true,
+    matches: {
+      options: /^([a-z])$/i,
+      errorMessage: 'Not allowed characters used',
+    },
   },
   gender: {
     exists: {
@@ -90,6 +98,10 @@ export const userSchema: Schema = {
     },
     isString: true,
     escape: true,
+    matches: {
+      options: /^([mfo])$/i,
+      errorMessage: 'Not allowed characters used',
+    },
   },
   address: {
     exists: {
@@ -107,6 +119,10 @@ export const userSchema: Schema = {
     },
     isString: true,
     escape: true,
+    matches: {
+      options: /^(\w+)$/i,
+      errorMessage: 'Not allowed characters used',
+    },
   },
   city: {
     exists: {
@@ -124,6 +140,10 @@ export const userSchema: Schema = {
     },
     isString: true,
     escape: true,
+    matches: {
+      options: /^([a-z0-9])$/i,
+      errorMessage: 'Not allowed characters used',
+    },
   },
   job: {
     exists: {
@@ -141,43 +161,10 @@ export const userSchema: Schema = {
     },
     isString: true,
     escape: true,
-  },
-};
-
-export const loginSchema: Schema = {
-  username: {
-    exists: {
-      errorMessage: 'Username is not set',
-      options: {
-        checkNull: true,
-      },
+    matches: {
+      options: /^([a-z])$/i,
+      errorMessage: 'Not allowed characters used',
     },
-    isLength: {
-      errorMessage: 'Username should be between 6 and 16 chars.',
-      options: {
-        min: 6,
-        max: 16,
-      },
-    },
-    isString: true,
-    escape: true,
-  },
-  password: {
-    exists: {
-      errorMessage: 'Password is not set',
-      options: {
-        checkNull: true,
-      },
-    },
-    isLength: {
-      errorMessage: 'Password should be between 8 and 64 chars.',
-      options: {
-        min: 8,
-        max: 64,
-      },
-    },
-    isString: true,
-    escape: true,
   },
 };
 
@@ -203,6 +190,12 @@ export const billSchema: Schema = {
       },
     },
     isNumeric: true,
+    custom: {
+      options: (number) => {
+        return number > 0;
+      },
+      errorMessage: 'Amount is not bigger then 0',
+    },
   },
   deadline: {
     exists: {
@@ -212,6 +205,12 @@ export const billSchema: Schema = {
       },
     },
     isDate: true,
+    custom: {
+      options: (date) => {
+        return new Date(date) > new Date();
+      },
+      errorMessage: 'Date is not in the future',
+    },
   },
   payed: {
     exists: {
