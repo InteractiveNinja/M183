@@ -19,7 +19,7 @@ export const loginSchema: Schema = {
     isString: true,
     escape: true,
     matches: {
-      options: /^([a-z0-9])$/i,
+      options: /^([a-z0-9]+)$/i,
       errorMessage: 'Not allowed characters used',
     },
   },
@@ -65,7 +65,7 @@ export const userSchema: Schema = {
     isString: true,
     escape: true,
     matches: {
-      options: /^([a-z])$/i,
+      options: /^([a-z]+)$/i,
       errorMessage: 'Not allowed characters used',
     },
   },
@@ -86,7 +86,7 @@ export const userSchema: Schema = {
     isString: true,
     escape: true,
     matches: {
-      options: /^([a-z])$/i,
+      options: /^([a-z]+)$/i,
       errorMessage: 'Not allowed characters used',
     },
   },
@@ -149,7 +149,7 @@ export const userSchema: Schema = {
     isString: true,
     escape: true,
     matches: {
-      options: /^([a-z])$/i,
+      options: /^([a-z]+)$/i,
       errorMessage: 'Not allowed characters used',
     },
   },
@@ -170,7 +170,7 @@ export const userSchema: Schema = {
     isString: true,
     escape: true,
     matches: {
-      options: /^([a-z])$/i,
+      options: /^([a-z]+)$/i,
       errorMessage: 'Not allowed characters used',
     },
   },
