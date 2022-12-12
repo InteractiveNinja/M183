@@ -220,9 +220,9 @@ export const billSchema: Schema = {
       errorMessage: 'Date is not in the future',
     },
   },
-  payed: {
+  paid: {
     exists: {
-      errorMessage: 'payed is not set',
+      errorMessage: 'paid is not set',
       options: {
         checkNull: true,
       },
