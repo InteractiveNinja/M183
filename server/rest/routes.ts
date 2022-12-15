@@ -97,12 +97,7 @@ apiRoutes.get(
     const { id } = req.params;
     return billDao
       .findeAllBy({ where: { userId: id } })
-      .then((bills) => {
-        if (bills) {
-          return res.json(bills);
-        }
-        return res.json([]);
-      })
+      .then((bills) => bills ? res.json(bills) : res.json([]))
       .catch(() => res.sendStatus(500));
   }
 );
@@ -115,15 +110,8 @@ apiRoutes.get(
     const { id } = req.params;
     return billDao
       .findById(id)
-      .then((bill) => {
-        if (bill == null) {
-          return res.sendStatus(404);
-        }
-        return res.json(bill);
-      })
-      .catch(() => {
-        return res.sendStatus(500);
-      });
+      .then((bill) => bill == null ? res.sendStatus(404) : res.json(bill))
+      .catch(() => res.sendStatus(500));
   }
 );
 
@@ -135,12 +123,8 @@ apiRoutes.post(
     const billData: BillDefinition = req.body;
     return billDao
       .create(billData)
-      .then(() => {
-        return res.sendStatus(200);
-      })
-      .catch(() => {
-        return res.sendStatus(500);
-      });
+      .then(() => res.sendStatus(200))
+      .catch(() => res.sendStatus(500));
   }
 );
 
@@ -165,9 +149,7 @@ apiRoutes.patch(
     const billData: BillDefinition = req.body;
     return billDao
       .update(billData)
-      .then((changedEntries) => {
-        changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400);
-      })
+      .then((changedEntries) => changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400))
       .catch(() => res.sendStatus(500));
   }
 );
@@ -184,12 +166,7 @@ apiRoutes.get(
     const { id } = req.params;
     return userDao
       .findById(id)
-      .then((user) => {
-        if (user == null) {
-          return res.sendStatus(404);
-        }
-        return res.json(user);
-      })
+      .then((user) => user == null ? res.sendStatus(404) : res.json(user))
       .catch(() => res.sendStatus(500));
   }
 );
