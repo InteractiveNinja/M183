@@ -21,7 +21,7 @@
       (click)="login()"
       class="btn btn-sm btn-primary w-100"
       type="button"
-    >
+      [disabled]="loginFormGroup.invalid">
       Login
     </button>
   </form>
