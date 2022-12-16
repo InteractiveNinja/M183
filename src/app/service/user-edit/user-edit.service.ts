@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, take } from 'rxjs';
-import { User } from '../login/user.model';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject, map, Observable, take } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { User } from '../login/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,16 +28,17 @@ export class UserEditService {
   }
 
   public updateUser(user: User): Observable<boolean> {
-    const { job, id, version } = user;
     return this.http
       .patch(
         `${environment.api}/update/user`,
-        { job, id, version },
+        { ...user },
         { responseType: 'text', observe: 'response' }
       )
       .pipe(
         map((e) => {
-          if (e.ok) this.userToEdit$.next(user);
+          if (e.ok) {
+            this.userToEdit$.next(user);
+          }
           return e.ok;
         })
       );
