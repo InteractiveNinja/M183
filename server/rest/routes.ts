@@ -21,6 +21,7 @@ const daoFactory = DaoFactory.getInstance();
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
+//Extends SessionInterface with User Model
 declare module 'express-session' {
   interface SessionData {
     user: User;
