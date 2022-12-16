@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { LoginService } from '../../service/login/login.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import { take } from 'rxjs';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { LoginService } from '../../service/login/login.service';
 
 @Component({
   selector: 'app-login',
@@ -10,12 +10,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  public isLoggedIn$ = this.service.isLoggedIn();
   public usernameForm = 'username';
   public passwordForm = 'password';
   public loginFormGroup = this.fb.group({
-    [this.usernameForm]: ['', Validators.required],
-    [this.passwordForm]: ['', Validators.required],
+    [this.usernameForm]: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^([a-z0-9]+)$/i),
+      Validators.minLength(6),
+      Validators.maxLength(16),
+    ]),
+    [this.passwordForm]: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^([a-z0-9!"#$%&'()*+,-./\\:;<=>?@\[\]^_`{|}~]+)$/i),
+      Validators.minLength(8),
+      Validators.maxLength(65),
+    ]),
   });
 
   constructor(
