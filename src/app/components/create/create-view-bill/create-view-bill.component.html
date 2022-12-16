@@ -28,6 +28,9 @@
     <div *ngIf="deadlineForm?.errors?.['futureValidator']">
       Datum muss in der Zukunft sein.
     </div>
+    <div *ngIf="deadlineForm?.errors?.['required']">
+      Datum muss gesetzt sein.
+    </div>
   </div>
   <label for="tenant">Schuldner</label>
   <select
