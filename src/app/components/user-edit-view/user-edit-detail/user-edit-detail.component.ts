@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../../../service/login/user.model';
 import { FormControl, Validators } from '@angular/forms';
-import { UserEditService } from '../../../service/user-edit/user-edit.service';
-import { take } from 'rxjs';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { User } from '../../../service/login/user.model';
+import { UserEditService } from '../../../service/user-edit/user-edit.service';
 
 @Component({
   selector: 'app-user-edit-detail',
@@ -11,7 +11,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-edit-detail.component.scss'],
 })
 export class UserEditDetailComponent {
-  public jobForm = new FormControl('Test123', [Validators.required]);
+  public jobForm = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^([a-z]+)$/i),
+    Validators.minLength(1),
+    Validators.maxLength(32),
+  ]);
 
   constructor(
     private readonly userEditService: UserEditService,
@@ -22,6 +27,7 @@ export class UserEditDetailComponent {
       .pipe(take(1))
       .subscribe((user) => this.jobForm.patchValue(user?.job));
   }
+
   @Input()
   public user?: User | null;
 
