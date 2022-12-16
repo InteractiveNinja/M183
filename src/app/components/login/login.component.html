@@ -1,6 +1,6 @@
 <div class="center">
   <h1 class="text-center w-100">Login</h1>
-  <form [formGroup]="loginFormGroup" class="login-form" (ngSubmit)="login()">
+  <form [formGroup]="loginFormGroup" class="login-form">
     <input
       [formControlName]="usernameFormName"
       class="form-control form-control-color w-100"
@@ -50,6 +50,7 @@
     <button
       class="btn btn-sm btn-primary w-100"
       type="button"
+      (click)="login()"
       [disabled]="loginFormGroup.invalid">
       Login
     </button>
