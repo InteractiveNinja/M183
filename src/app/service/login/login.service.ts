@@ -66,11 +66,11 @@ export class LoginService {
 
   public logout(): Observable<boolean> {
     return this.http
-      .post(`${environment.api}/logout`, {}, { observe: 'response' })
+      .post(`${environment.api}/logout`, {}, { responseType: 'text' })
       .pipe(
-        map((e) => {
+        map(() => {
           this.setLogoutState();
-          return e.ok;
+          return true;
         })
       );
   }
