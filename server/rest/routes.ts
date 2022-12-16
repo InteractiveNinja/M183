@@ -110,7 +110,6 @@ apiRoutes.post(
 
 apiRoutes.use((req: Request, res: Response, next: NextFunction) => {
   const { session } = req;
-  console.log(session.user);
   if (session.user) {
     next();
   } else {
