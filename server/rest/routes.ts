@@ -19,7 +19,6 @@ const daoFactory = DaoFactory.getInstance();
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
-let cookies = new Map();
 
 apiRoutes.post(
   '/create/user',
@@ -39,51 +38,17 @@ apiRoutes.post(
   checkSchema(loginSchema),
   checkError,
   (req: Request, res: Response) => {
-    const { username, password } = req.body;
-    userDao.findOneBy({ where: { username } }).then((user) => {
+    const {username, password} = req.body;
+    userDao.findOneBy({where: {username}}).then((user) => {
       if (user && user.checkPassword(password)) {
-        const cookie = generateUUID();
-        res
-          .status(200)
-          .cookie('uuid', cookie, { maxAge: 360000 })
-          .json({ user, cookie });
-        cookies.set(cookie, user);
-        return;
+        return res
+          .json(user);
       }
-      res.status(401).json('not ok');
+      return res.sendStatus(401);
     });
   }
 );
-/**
- * Used to Validate a Session
- * TODO: Should be Removed with when Cookies are really implemented
- */
-apiRoutes.post('/session', (req, res) => {
-  const { session } = req.body;
-  const found = cookies.get(session) != undefined;
-  if (found) {
-    const user = cookies.get(session);
-    res.status(200).json(user);
-    return;
-  }
 
-  res.clearCookie('uuid').status(401).json('not ok');
-});
-
-apiRoutes.post('/logout', (req, res) => {
-  res.clearCookie('uuid').json('done');
-});
-
-apiRoutes.use(cookieparser());
-apiRoutes.use((req, res, next) => {
-  const { uuid } = req.cookies;
-  const found = cookies.get(uuid) != undefined;
-  if (!found) {
-    res.clearCookie('uuid').status(401).json('no session');
-    return;
-  }
-  next();
-});
 
 apiRoutes.get('/bills', (req, res) => {
   return billDao.findAll().then((bills) => res.json(bills));
