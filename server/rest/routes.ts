@@ -79,6 +79,7 @@ apiRoutes.post(
 apiRoutes.post('/session', (req: Request, res: Response) => {
   const { session } = req;
   if (session.user) {
+    Logger.log(`logging user via session for ${req.sessionID}`);
     return res.json(session.user);
   } else {
     return res.sendStatus(401);
