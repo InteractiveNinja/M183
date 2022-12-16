@@ -113,7 +113,7 @@ export class CreateViewUserComponent {
       .pipe(take(1))
       .subscribe((e) => {
         if (e) {
-          alert('Benutzer erstellen');
+          alert('Benutzer erstellt');
           this.router.navigateByUrl('/create');
         }
       });
