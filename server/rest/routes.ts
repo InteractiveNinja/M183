@@ -1,10 +1,12 @@
-import { Request, Response, Router } from 'express';
-import { DaoFactory } from '../data/factory/daoFactory';
-import { UserDefinition } from '../data/dao/userDao';
-import { BillDefinition } from '../data/dao/billDao';
-import { v4 as generateUUID } from 'uuid';
-import * as cookieparser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
+import { NextFunction, Request, Response, Router } from 'express';
+import * as sessions from 'express-session';
 import { checkSchema } from 'express-validator';
+import { BillDefinition } from '../data/dao/billDao';
+import { UserDefinition } from '../data/dao/userDao';
+import { DaoFactory } from '../data/factory/daoFactory';
+import { User } from '../data/models/user';
+import { Logger } from '../util/logger';
 import {
   billSchema,
   checkError,
@@ -19,6 +21,26 @@ const daoFactory = DaoFactory.getInstance();
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
+declare module 'express-session' {
+  interface SessionData {
+    user: User;
+  }
+}
+
+//cookie middleware
+apiRoutes.use(cookieParser());
+
+const oneDay = 1000 * 60 * 60 * 24;
+
+//session middleware
+apiRoutes.use(
+  sessions({
+    secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay, httpOnly: true },
+    resave: false,
+  })
+);
 
 apiRoutes.post(
   '/create/user',
@@ -38,17 +60,61 @@ apiRoutes.post(
   checkSchema(loginSchema),
   checkError,
   (req: Request, res: Response) => {
-    const {username, password} = req.body;
-    userDao.findOneBy({where: {username}}).then((user) => {
+    const { session } = req;
+    const { username, password } = req.body;
+    return userDao.findOneBy({ where: { username } }).then((user) => {
       if (user && user.checkPassword(password)) {
-        return res
-          .json(user);
+        const newSession = session.regenerate(() => {
+          Logger.log(`regenerate session for ${req.sessionID}`);
+        });
+        newSession.user = user;
+        return res.json(user);
+      } else {
+        return res.sendStatus(401);
       }
-      return res.sendStatus(401);
     });
   }
 );
 
+apiRoutes.post('/session', (req: Request, res: Response) => {
+  const { session } = req;
+  if (session.user) {
+    return res.json(session.user);
+  } else {
+    return res.sendStatus(401);
+  }
+});
+
+apiRoutes.post('/logout', (req: Request, res: Response) => {
+  const { session } = req;
+  session.destroy(() => {
+    Logger.log(`destroying session for ${req.sessionID}`);
+  });
+  return res.sendStatus(200);
+});
+
+apiRoutes.post(
+  '/create/user',
+  checkSchema(userSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const usersData: UserDefinition = req.body;
+    return userDao
+      .create(usersData)
+      .then(() => res.sendStatus(200))
+      .catch(() => res.sendStatus(400));
+  }
+);
+
+apiRoutes.use((req: Request, res: Response, next: NextFunction) => {
+  const { session } = req;
+  console.log(session.user);
+  if (session.user) {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
+});
 
 apiRoutes.get('/bills', (req, res) => {
   return billDao.findAll().then((bills) => res.json(bills));
