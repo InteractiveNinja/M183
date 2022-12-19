@@ -1,6 +1,7 @@
 import * as cookieParser from 'cookie-parser';
 import { NextFunction, Request, Response, Router } from 'express';
 import * as sessions from 'express-session';
+import { Store } from 'express-session';
 import { checkSchema } from 'express-validator';
 import { BillDefinition } from '../data/dao/billDao';
 import { UserDefinition } from '../data/dao/userDao';
@@ -14,12 +15,19 @@ import {
   loginSchema,
   userSchema,
 } from './validatorSchemas';
+import * as SessionStore from 'connect-session-sequelize';
+import { SequelizeFactory } from '../data/factory/sequelizeFactory';
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
 
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
+
+const database = SequelizeFactory.getInstance().getSequelize();
+const sessionStore = SessionStore(Store);
+
+const sequelizeStore = new sessionStore({ db: database });
 
 //Extends SessionInterface with User Model
 declare module 'express-session' {
@@ -32,7 +40,6 @@ declare module 'express-session' {
 apiRoutes.use(cookieParser());
 
 const oneDay = 1000 * 60 * 60 * 24;
-
 //session middleware
 apiRoutes.use(
   sessions({
@@ -40,6 +47,7 @@ apiRoutes.use(
     saveUninitialized: true,
     cookie: { maxAge: oneDay, httpOnly: true },
     resave: false,
+    store: sequelizeStore,
   })
 );
 
