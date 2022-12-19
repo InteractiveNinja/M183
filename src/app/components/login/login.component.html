@@ -2,26 +2,56 @@
   <h1 class="text-center w-100">Login</h1>
   <form [formGroup]="loginFormGroup" class="login-form">
     <input
-      [formControlName]="usernameForm"
+      [formControlName]="usernameFormName"
       class="form-control form-control-color w-100"
       id="username"
       name="username"
       placeholder="Username"
       type="text"
     />
+    <div *ngIf="loginForm?.invalid && (loginForm?.dirty)"
+         class="alert alert-danger">
+      <div *ngIf="loginForm?.errors?.['required']">
+        Benutzername muss eingegeben werden.
+      </div>
+      <div *ngIf="loginForm?.errors?.['minlength']">
+        Benutzername muss mindestens 6 Zeichen lang sein.
+      </div>
+      <div *ngIf="loginForm?.errors?.['maxlength']">
+        Benutzername kann maximal 16 Zeichen lang sein.
+      </div>
+      <div *ngIf="loginForm?.errors?.['pattern']">
+        Benutzername kann nur aus folgenden Zeichen bestehen. a-Z 0-9
+      </div>
+    </div>
     <input
-      [formControlName]="passwordForm"
+      [formControlName]="passwordFormName"
       class="form-control form-control-color w-100"
       id="password"
       name="password"
       placeholder="Password"
       type="password"
     />
+    <div *ngIf="passwordForm?.invalid && (passwordForm?.dirty)"
+         class="alert alert-danger">
+      <div *ngIf="passwordForm?.errors?.['required']">
+        Passwort muss eingegeben werden.
+      </div>
+      <div *ngIf="passwordForm?.errors?.['minlength']">
+        Passwort muss mindestens 4 Zeichen lang sein.
+      </div>
+      <div *ngIf="passwordForm?.errors?.['maxlength']">
+        Passwort kann maximal 64 Zeichen lang sein.
+      </div>
+      <div *ngIf="passwordForm?.errors?.['pattern']">
+        Passwort kann nur aus folgenden Zeichen bestehen. a-Z 0-9 !"#$%&'()*+,-./\\:;<=>?@\[\]^_`{{|}~]+
+      </div>
+    </div>
     <button
-      (click)="login()"
       class="btn btn-sm btn-primary w-100"
       type="button"
-    >
+      (click)="login()"
+      [disabled]="loginFormGroup.invalid">
       Login
     </button>
   </form>

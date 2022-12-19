@@ -9,10 +9,26 @@
       placeholder="Berufsbezeichnung"
       type="text"
     />
+    <div *ngIf="jobForm?.invalid && (jobForm?.dirty)"
+         class="alert alert-danger">
+      <div *ngIf="jobForm?.errors?.['required']">
+        Arbeitsbezeichnung muss eingegeben werden.
+      </div>
+      <div *ngIf="jobForm?.errors?.['minlength']">
+        Arbeitsbezeichnung muss mindestens 1 Zeichen lang sein.
+      </div>
+      <div *ngIf="jobForm?.errors?.['maxlength']">
+        Arbeitsbezeichnung kann maximal 32 Zeichen lang sein.
+      </div>
+      <div *ngIf="jobForm?.errors?.['pattern']">
+        Arbeitsbezeichnung kann nur aus folgenden Zeichen bestehen. a-Z
+      </div>
+    </div>
     <button
       (click)="update()"
       class="btn btn-sm btn-primary w-100"
       type="button"
+      [disabled]="jobForm.invalid"
     >
       Ändern
     </button>

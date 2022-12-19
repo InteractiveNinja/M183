@@ -1,41 +1,101 @@
 <form [formGroup]="userForm" class="user-form">
   <label for="username">Benutzername</label>
   <input
-    [formControlName]="usernameForm"
+    [formControlName]="usernameFormName"
     class="form-control form-control-color w-100"
     id="username"
     placeholder="Benutzername"
     type="text"
   />
+  <div *ngIf="usernameForm?.invalid && (usernameForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="usernameForm?.errors?.['required']">
+      Benutzername muss eingegeben werden.
+    </div>
+    <div *ngIf="usernameForm?.errors?.['minlength']">
+      Benutzername muss mindestens 6 Zeichen lang sein.
+    </div>
+    <div *ngIf="usernameForm?.errors?.['maxlength']">
+      Benutzername kann maximal 16 Zeichen lang sein.
+    </div>
+    <div *ngIf="usernameForm?.errors?.['pattern']">
+      Benutzername kann nur aus folgenden Zeichen bestehen. A-z 0-9
+    </div>
+  </div>
   <label for="password">Passwort</label>
   <input
-    [formControlName]="passwordForm"
+    [formControlName]="passwordFormName"
     class="form-control form-control-color w-100"
     id="password"
     placeholder="Password"
     type="password"
   />
+  <div *ngIf="passwordForm?.invalid && (passwordForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="passwordForm?.errors?.['required']">
+      Passwort muss eingegeben werden.
+    </div>
+    <div *ngIf="passwordForm?.errors?.['minlength']">
+      Passwort muss mindestens 8 Zeichen lang sein.
+    </div>
+    <div *ngIf="passwordForm?.errors?.['maxlength']">
+      Passwort kann maximal 64 Zeichen lang sein.
+    </div>
+    <div *ngIf="passwordForm?.errors?.['pattern']">
+      Passwort kann nur aus folgenden Zeichen bestehen. a-Z 0-9 !"#$%&'()*+,-./\\:;<=>?@\[\]^_`{{|}~]+
+    </div>
+  </div>
   <label for="firstname">Vorname</label>
   <input
-    [formControlName]="firstnameForm"
+    [formControlName]="firstnameFormName"
     class="form-control form-control-color w-100"
     id="firstname"
     placeholder="Vorname"
     type="text"
   />
+  <div *ngIf="firstnameForm?.invalid && (firstnameForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="firstnameForm?.errors?.['required']">
+      Vorname muss eingegeben werden.
+    </div>
+    <div *ngIf="firstnameForm?.errors?.['minlength']">
+      Vorname muss mindestens 1 Zeichen lang sein.
+    </div>
+    <div *ngIf="firstnameForm?.errors?.['maxlength']">
+      Vorname kann maximal 25 Zeichen lang sein.
+    </div>
+    <div *ngIf="firstnameForm?.errors?.['pattern']">
+      Vorname kann nur aus folgenden Zeichen bestehen. A-z
+    </div>
+  </div>
   <label for="lastname">Nachname</label>
   <input
-    [formControlName]="lastnameForm"
+    [formControlName]="lastnameFormName"
     class="form-control form-control-color w-100"
     id="lastname"
     placeholder="Nachname"
     type="text"
   />
+  <div *ngIf="lastnameForm?.invalid && (lastnameForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="lastnameForm?.errors?.['required']">
+      Nachname muss eingegeben werden.
+    </div>
+    <div *ngIf="lastnameForm?.errors?.['minlength']">
+      Nachname muss mindestens 4 Zeichen lang sein.
+    </div>
+    <div *ngIf="lastnameForm?.errors?.['maxlength']">
+      Nachname kann maximal 64 Zeichen lang sein.
+    </div>
+    <div *ngIf="lastnameForm?.errors?.['pattern']">
+      Nachname kann nur aus folgenden Zeichen bestehen. A-z
+    </div>
+  </div>
   <label for="gender">Geschlecht</label>
   <div>
     <div class="form-check" id="gender">
       <input
-        [formControlName]="genderForm"
+        [formControlName]="genderFormName"
         class="form-check-input"
         id="male"
         type="radio"
@@ -45,42 +105,103 @@
     </div>
     <div class="form-check">
       <input
-        [formControlName]="genderForm"
+        [formControlName]="genderFormName"
         class="form-check-input"
         id="female"
         type="radio"
-        value="W"
+        value="F"
       />
       <label class="form-check-label" for="female"> Weiblich </label>
+    </div>
+    <div class="form-check">
+      <input
+        [formControlName]="genderFormName"
+        class="form-check-input"
+        id="other"
+        type="radio"
+        value="O"
+      />
+      <label class="form-check-label" for="female"> Sonstige </label>
+    </div>
+  </div>
+  <div *ngIf="genderForm?.invalid && (genderForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="genderForm?.errors?.['required']">
+      Geschlecht muss eingegeben werden.
     </div>
   </div>
   <label for="address">Addresse</label>
   <input
-    [formControlName]="addressForm"
+    [formControlName]="addressFormName"
     class="form-control form-control-color w-100"
     id="address"
     placeholder="Addresse"
     type="text"
   />
+  <div *ngIf="addressForm?.invalid && (addressForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="addressForm?.errors?.['required']">
+      Adresse muss eingegeben werden.
+    </div>
+    <div *ngIf="addressForm?.errors?.['minlength']">
+      Adresse muss mindestens 1 Zeichen lang sein.
+    </div>
+    <div *ngIf="addressForm?.errors?.['maxlength']">
+      Adresse kann maximal 64 Zeichen lang sein.
+    </div>
+    <div *ngIf="addressForm?.errors?.['pattern']">
+      Adresse kann nur aus folgenden Zeichen bestehen. A-z 0-9
+    </div>
+  </div>
   <label for="city">Stadt</label>
   <input
-    [formControlName]="cityForm"
+    [formControlName]="cityFormName"
     class="form-control form-control-color w-100"
     id="city"
     placeholder="Stadt"
     type="text"
   />
+  <div *ngIf="cityForm?.invalid && (cityForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="cityForm?.errors?.['required']">
+      Stadt muss eingegeben werden.
+    </div>
+    <div *ngIf="cityForm?.errors?.['minlength']">
+      Stadt muss mindestens 1 Zeichen lang sein.
+    </div>
+    <div *ngIf="cityForm?.errors?.['maxlength']">
+      Stadt kann maximal 16 Zeichen lang sein.
+    </div>
+    <div *ngIf="cityForm?.errors?.['pattern']">
+      Stadt kann nur aus folgenden Zeichen bestehen. A-z
+    </div>
+  </div>
   <label for="job">Beruf</label>
   <input
-    [formControlName]="jobForm"
+    [formControlName]="jobFormName"
     class="form-control form-control-color w-100"
     id="job"
     placeholder="Job"
     type="text"
   />
+  <div *ngIf="jobForm?.invalid && (jobForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="jobForm?.errors?.['required']">
+      Beruf muss eingegeben werden.
+    </div>
+    <div *ngIf="jobForm?.errors?.['minlength']">
+      Beruf muss mindestens 1 Zeichen lang sein.
+    </div>
+    <div *ngIf="jobForm?.errors?.['maxlength']">
+      Beruf kann maximal 32 Zeichen lang sein.
+    </div>
+    <div *ngIf="jobForm?.errors?.['pattern']">
+      Beruf kann nur aus folgenden Zeichen bestehen. A-z
+    </div>
+  </div>
   <div class="form-check">
     <input
-      [formControlName]="adminForm"
+      [formControlName]="adminFormName"
       class="form-check-input"
       id="admin"
       type="checkbox"

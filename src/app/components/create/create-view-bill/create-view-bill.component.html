@@ -1,31 +1,55 @@
 <form [formGroup]="billForm" class="bill-form">
   <label for="amount">Rechnungsmenge</label>
   <input
-    [formControlName]="amountForm"
+    [formControlName]="amountFormName"
     class="form-control form-control-color w-100"
     placeholder="Rechnungsmenge"
     type="text"
     id="amount"
   />
+  <div *ngIf="amountForm?.invalid && (amountForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="amountForm?.errors?.['min']">
+      Menge muss grösser als 1 sein.
+    </div>
+    <div *ngIf="amountForm?.errors?.['required']">
+      Menge muss gesetzt sein.
+    </div>
+  </div>
   <label for="deadline">Fälligkeitsdatum</label>
   <input
-    [formControlName]="deadlineForm"
+    [formControlName]="deadlineFormName"
     class="form-control form-control-color w-100"
     type="date"
     id="deadline"
   />
+  <div *ngIf="deadlineForm?.invalid && (deadlineForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="deadlineForm?.errors?.['futureValidator']">
+      Datum muss in der Zukunft sein.
+    </div>
+    <div *ngIf="deadlineForm?.errors?.['required']">
+      Datum muss gesetzt sein.
+    </div>
+  </div>
   <label for="tenant">Schuldner</label>
   <select
     class="form-control form-control-color w-100"
     id="tenant"
     *ngIf="users$ | async as users"
-    [formControlName]="userForm"
+    [formControlName]="userFormName"
   >
     <option value="" disabled selected>Wähle einen Benutzer aus</option>
     <option *ngFor="let user of users" [value]="user.id">
       {{ user.id }} | {{ user.firstname }} {{ user.lastname }}
     </option>
   </select>
+  <div *ngIf="userForm?.invalid && (userForm?.dirty)"
+       class="alert alert-danger">
+    <div *ngIf="userForm?.errors?.['required']">
+      Schuldner muss gesetzt werden.
+    </div>
+  </div>
   <button
     [disabled]="billForm.invalid"
     (click)="createBill()"
@@ -34,4 +58,5 @@
   >
     Rechnung erstellen
   </button>
+
 </form>
