@@ -71,6 +71,9 @@ export class LoginService {
         map(() => {
           this.setLogoutState();
           return true;
+        }),
+        catchError(() => {
+          return of(false);
         })
       );
   }
