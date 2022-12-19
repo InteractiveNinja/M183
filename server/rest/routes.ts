@@ -1,10 +1,12 @@
-import { Request, Response, Router } from 'express';
-import { DaoFactory } from '../data/factory/daoFactory';
-import { UserDefinition } from '../data/dao/userDao';
-import { BillDefinition } from '../data/dao/billDao';
-import { v4 as generateUUID } from 'uuid';
-import * as cookieparser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
+import { NextFunction, Request, Response, Router } from 'express';
+import * as sessions from 'express-session';
 import { checkSchema } from 'express-validator';
+import { BillDefinition } from '../data/dao/billDao';
+import { UserDefinition } from '../data/dao/userDao';
+import { DaoFactory } from '../data/factory/daoFactory';
+import { User } from '../data/models/user';
+import { Logger } from '../util/logger';
 import {
   billSchema,
   checkError,
@@ -19,7 +21,27 @@ const daoFactory = DaoFactory.getInstance();
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
-let cookies = new Map();
+//Extends SessionInterface with User Model
+declare module 'express-session' {
+  interface SessionData {
+    user: User;
+  }
+}
+
+//cookie middleware
+apiRoutes.use(cookieParser());
+
+const oneDay = 1000 * 60 * 60 * 24;
+
+//session middleware
+apiRoutes.use(
+  sessions({
+    secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay, httpOnly: true },
+    resave: false,
+  })
+);
 
 apiRoutes.post(
   '/create/user',
@@ -39,50 +61,60 @@ apiRoutes.post(
   checkSchema(loginSchema),
   checkError,
   (req: Request, res: Response) => {
+    const { session } = req;
     const { username, password } = req.body;
-    userDao.findOneBy({ where: { username } }).then((user) => {
+    return userDao.findOneBy({ where: { username } }).then((user) => {
       if (user && user.checkPassword(password)) {
-        const cookie = generateUUID();
-        res
-          .status(200)
-          .cookie('uuid', cookie, { maxAge: 360000 })
-          .json({ user, cookie });
-        cookies.set(cookie, user);
-        return;
+        const newSession = session.regenerate(() => {
+          Logger.log(`regenerate session for ${req.sessionID}`);
+        });
+        newSession.user = user;
+        return res.json(user);
+      } else {
+        return res.sendStatus(401);
       }
-      res.status(401).json('not ok');
     });
   }
 );
-/**
- * Used to Validate a Session
- * TODO: Should be Removed with when Cookies are really implemented
- */
-apiRoutes.post('/session', (req, res) => {
-  const { session } = req.body;
-  const found = cookies.get(session) != undefined;
-  if (found) {
-    const user = cookies.get(session);
-    res.status(200).json(user);
-    return;
-  }
 
-  res.clearCookie('uuid').status(401).json('not ok');
+apiRoutes.post('/session', (req: Request, res: Response) => {
+  const { session } = req;
+  if (session.user) {
+    Logger.log(`logging user via session for ${req.sessionID}`);
+    return res.json(session.user);
+  } else {
+    return res.sendStatus(401);
+  }
 });
 
-apiRoutes.post('/logout', (req, res) => {
-  res.clearCookie('uuid').json('done');
+apiRoutes.post('/logout', (req: Request, res: Response) => {
+  const { session } = req;
+  session.destroy(() => {
+    Logger.log(`destroying session for ${req.sessionID}`);
+  });
+  return res.sendStatus(200);
 });
 
-apiRoutes.use(cookieparser());
-apiRoutes.use((req, res, next) => {
-  const { uuid } = req.cookies;
-  const found = cookies.get(uuid) != undefined;
-  if (!found) {
-    res.clearCookie('uuid').status(401).json('no session');
-    return;
+apiRoutes.post(
+  '/create/user',
+  checkSchema(userSchema),
+  checkError,
+  (req: Request, res: Response) => {
+    const usersData: UserDefinition = req.body;
+    return userDao
+      .create(usersData)
+      .then(() => res.sendStatus(200))
+      .catch(() => res.sendStatus(400));
   }
-  next();
+);
+
+apiRoutes.use((req: Request, res: Response, next: NextFunction) => {
+  const { session } = req;
+  if (session.user) {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
 });
 
 apiRoutes.get('/bills', (req, res) => {
@@ -97,7 +129,7 @@ apiRoutes.get(
     const { id } = req.params;
     return billDao
       .findeAllBy({ where: { userId: id } })
-      .then((bills) => bills ? res.json(bills) : res.json([]))
+      .then((bills) => (bills ? res.json(bills) : res.json([])))
       .catch(() => res.sendStatus(500));
   }
 );
@@ -110,7 +142,7 @@ apiRoutes.get(
     const { id } = req.params;
     return billDao
       .findById(id)
-      .then((bill) => bill == null ? res.sendStatus(404) : res.json(bill))
+      .then((bill) => (bill == null ? res.sendStatus(404) : res.json(bill)))
       .catch(() => res.sendStatus(500));
   }
 );
@@ -149,7 +181,9 @@ apiRoutes.patch(
     const billData: BillDefinition = req.body;
     return billDao
       .update(billData)
-      .then((changedEntries) => changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400))
+      .then((changedEntries) =>
+        changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400)
+      )
       .catch(() => res.sendStatus(500));
   }
 );
@@ -166,7 +200,7 @@ apiRoutes.get(
     const { id } = req.params;
     return userDao
       .findById(id)
-      .then((user) => user == null ? res.sendStatus(404) : res.json(user))
+      .then((user) => (user == null ? res.sendStatus(404) : res.json(user)))
       .catch(() => res.sendStatus(500));
   }
 );
