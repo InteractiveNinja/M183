@@ -22,7 +22,7 @@ export class LoginComponent {
     Validators.required,
     Validators.pattern(/^([a-z0-9!"#$%&'()*+,-./\\:;<=>?@\[\]^_`{|}~]+)$/i),
     Validators.minLength(8),
-    Validators.maxLength(65),
+    Validators.maxLength(64),
   ]);
   public loginFormGroup = this.fb.group({
     [this.usernameFormName]: this.loginForm,
