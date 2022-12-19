@@ -30,7 +30,7 @@ export class CreateViewUserComponent {
     Validators.required,
     Validators.pattern(/^([a-z0-9!"#$%&'()*+,-./\\:;<=>?@\[\]^_`{|}~]+)$/i),
     Validators.minLength(8),
-    Validators.maxLength(65),
+    Validators.maxLength(64),
   ]);
   public firstnameForm = new FormControl('', [
     Validators.required,
