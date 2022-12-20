@@ -1,3 +1,4 @@
+import * as SessionStore from 'connect-session-sequelize';
 import * as cookieParser from 'cookie-parser';
 import { NextFunction, Request, Response, Router } from 'express';
 import * as sessions from 'express-session';
@@ -6,6 +7,7 @@ import { checkSchema } from 'express-validator';
 import { BillDefinition } from '../data/dao/billDao';
 import { UserDefinition } from '../data/dao/userDao';
 import { DaoFactory } from '../data/factory/daoFactory';
+import { SequelizeFactory } from '../data/factory/sequelizeFactory';
 import { User } from '../data/models/user';
 import { Logger } from '../util/logger';
 import {
@@ -15,8 +17,6 @@ import {
   loginSchema,
   userSchema,
 } from './validatorSchemas';
-import * as SessionStore from 'connect-session-sequelize';
-import { SequelizeFactory } from '../data/factory/sequelizeFactory';
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
@@ -60,7 +60,7 @@ apiRoutes.post(
     return userDao
       .create(usersData)
       .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(400));
+      .catch(() => res.sendStatus(500));
   }
 );
 
