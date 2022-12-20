@@ -69,15 +69,29 @@ apiRoutes.post(
   checkSchema(loginSchema),
   checkError,
   (req: Request, res: Response) => {
-    const { session } = req;
     const { username, password } = req.body;
     return userDao.findOneBy({ where: { username } }).then((user) => {
       if (user && user.checkPassword(password)) {
-        const newSession = session.regenerate(() => {
+        return req.session.regenerate((err) => {
           Logger.log(`regenerate session for ${req.sessionID}`);
+          if (err) {
+            Logger.error(`could not regenerate session for ${req.sessionID}`);
+            return res.sendStatus(500);
+          }
+
+          // save user into cookie
+          req.session.user = user;
+
+          // Can only sent response after cookie was saved in database, else old cookie will be sent.
+          return req.session.save((err) => {
+            Logger.log(`saving session for ${req.sessionID}`);
+            if (err) {
+              Logger.error(`could not save session for ${req.sessionID}`);
+              return res.sendStatus(500);
+            }
+            return res.json(user);
+          });
         });
-        newSession.user = user;
-        return res.json(user);
       } else {
         return res.sendStatus(401);
       }
