@@ -71,6 +71,7 @@ apiRoutes.post(
         newSession.user = user;
         return res.json(user);
       } else {
+        Logger.log(`failed login with ${session.id}`);
         return res.sendStatus(401);
       }
     });
