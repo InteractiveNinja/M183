@@ -41,18 +41,18 @@ const routes: Routes = [
   },
   {
     path: 'create',
-    canActivate: [LoginGuardGuard],
+    canActivate: [LoginGuardGuard, AdminGuardGuard],
     component: CreateViewComponent,
     children: [
       {
         path: 'bill',
         component: CreateViewBillComponent,
-        canActivate: [LoginGuardGuard],
+        canActivate: [LoginGuardGuard, AdminGuardGuard],
       },
       {
         path: 'user',
         component: CreateViewUserComponent,
-        canActivate: [LoginGuardGuard],
+        canActivate: [LoginGuardGuard, AdminGuardGuard],
       },
     ],
   },
