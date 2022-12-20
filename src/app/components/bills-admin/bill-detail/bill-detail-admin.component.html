@@ -1,0 +1,27 @@
+<table class="table table-striped bill" *ngIf="bills">
+  <thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Menge</th>
+    <th scope="col">Erstellungsdatum</th>
+    <th scope="col">Zahlungsdatum</th>
+    <th scope="col">Benutzer</th>
+    <th scope="col">Status</th>
+    <th scope="col">Löschen</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let bill of bills">
+    <th scope="row">{{ bill.id }}</th>
+    <td>{{ bill.amount | currency: "CHF" }}</td>
+    <td>{{ bill.createdAt | date: "dd.MM.yyyy" }}</td>
+    <td>{{ bill.deadline | date: "dd.MM.yyyy" }}</td>
+    <td>{{ bill.UserId }}</td>
+    <td class="status" [class.open]="!bill.paid">
+      {{ bill.paid ? "Gezahlt" : "Offen" }}
+    </td>
+    <td class="text-center" (click)="onRemove(bill.id)"><i class="bi bi-trash3-fill"></i></td>
+
+  </tr>
+  </tbody>
+</table>

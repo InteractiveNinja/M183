@@ -4,6 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BillDetailAdminComponent } from './components/bills-admin/bill-detail/bill-detail-admin.component';
+import { BillsAdminViewComponent } from './components/bills-admin/bills-admin-view.component';
 import { BillDetailComponent } from './components/bills/bill-detail/bill-detail.component';
 import { BillsViewComponent } from './components/bills/bills-view.component';
 import { CreateViewBillComponent } from './components/create/create-view-bill/create-view-bill.component';
@@ -37,6 +39,8 @@ import { LoginService } from './service/login/login.service';
     CreateViewBillComponent,
     CreateViewUserComponent,
     FooterComponent,
+    BillsAdminViewComponent,
+    BillDetailAdminComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
