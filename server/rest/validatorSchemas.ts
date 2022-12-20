@@ -1,5 +1,6 @@
 import { Schema, validationResult } from 'express-validator';
 import { NextFunction, Request, Response } from 'express';
+import { Logger } from "../util/logger";
 
 export const loginSchema: Schema = {
   username: {
@@ -249,6 +250,7 @@ export const billSchema: Schema = {
 export function checkError(req: Request, res: Response, next: NextFunction) {
   let errors = validationResult(req);
   if (!errors.isEmpty()) {
+    Logger.log(JSON.stringify(errors.array()));
     return res.status(400).json({
       errors: errors
         .array()
