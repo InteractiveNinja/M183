@@ -44,7 +44,7 @@ const oneDay = 1000 * 60 * 60 * 24;
 apiRoutes.use(
   sessions({
     secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { maxAge: oneDay, httpOnly: true },
     resave: false,
     store: sequelizeStore,
