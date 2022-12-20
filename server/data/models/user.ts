@@ -1,8 +1,9 @@
+import { compareSync, hashSync } from 'bcryptjs';
 import { DataTypes, Model, SaveOptions } from 'sequelize';
 import { SequelizeFactory } from '../factory/sequelizeFactory';
-import { compareSync, hashSync } from 'bcryptjs';
 
 const sequelize = SequelizeFactory.getInstance().getSequelize();
+
 export class User extends Model {
   declare id: number;
   declare username: string;
@@ -41,6 +42,7 @@ User.init(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
