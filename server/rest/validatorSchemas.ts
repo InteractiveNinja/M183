@@ -1,5 +1,5 @@
-import { Schema, validationResult } from 'express-validator';
 import { NextFunction, Request, Response } from 'express';
+import { Schema, validationResult } from 'express-validator';
 
 export const loginSchema: Schema = {
   username: {
@@ -173,6 +173,15 @@ export const userSchema: Schema = {
       options: /^([a-z]+)$/i,
       errorMessage: 'Not allowed characters used',
     },
+  },
+  admin: {
+    exists: {
+      errorMessage: 'admin is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isBoolean: true,
   },
 };
 
