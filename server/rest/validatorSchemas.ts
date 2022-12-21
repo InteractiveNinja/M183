@@ -128,7 +128,7 @@ export const userSchema: Schema = {
     isString: true,
     escape: true,
     matches: {
-      options: /^(\w+)$/i,
+      options: /^[\w\s.]+$/i,
       errorMessage: 'Not allowed characters used',
     },
   },
