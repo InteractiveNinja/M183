@@ -1,10 +1,10 @@
-import { Sequelize } from 'sequelize';
 import * as mariadb from 'mariadb';
+import { Sequelize } from 'sequelize';
 import { Logger } from '../../util/logger';
 
 export class SequelizeFactory {
   private static instance: SequelizeFactory;
-  private sequelize = new Sequelize('bill', 'root', 'docker', {
+  private sequelize = new Sequelize('bill', 'bill', 'bill', {
     host: 'localhost',
     dialect: 'mariadb',
     dialectModule: mariadb,
