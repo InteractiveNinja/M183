@@ -117,19 +117,6 @@ apiRoutes.post('/logout', (req: Request, res: Response) => {
   return res.sendStatus(200);
 });
 
-apiRoutes.post(
-  '/create/user',
-  checkSchema(userSchema),
-  checkError,
-  (req: Request, res: Response) => {
-    const usersData: UserDefinition = req.body;
-    return userDao
-      .create(usersData)
-      .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(400));
-  }
-);
-
 apiRoutes.use((req: Request, res: Response, next: NextFunction) => {
   const { session } = req;
   if (session.user) {
