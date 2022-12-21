@@ -1,26 +1,37 @@
 ## Inbetriebnahme
 
-* Packages Installieren `npm i`
+* Packages Installieren `$ npm i`
 * Datenbank per Docker starten
-  * in den db-docker Ordner navigieren; `docker-compose up -d`
-* Datenbank erstellen
-  * Auf `http://localhost:8080/` navigieren
+  * per Terminal in den `db-docker` Ordner navigieren; `$ docker-compose up -d` ausführen
+* Datenbank und Benutzer prüfen
+  * Auf `http://localhost:8080/` im Web navigieren
     * Login: root
     * Password: docker
-  * Datenbank Names `bill` erstellen
-* Server per SSR starten `npm run dev:ssr`
-  * Tabellen werden generiert beim start
-  * Benutzer muss erstellt bsw.
+  * Prüfen ob eine Datenbank mit dem Namen `bill` existiert.
+  * Auf `Rechte` klicken
+    * Prüfen ob der Benutzer `bill` existert.
+* Server per SSR starten `$ npm run dev:ssr`
+  * Tabellen werden beim start für `bill` generiert.
+  * `http://localhost:4200` kann jetzt im Web aufgerufen werden.
+
+## Web User erstellen
+
+Um einen Webbenutzer zu erstellen, wird per `POST Request` folgenden Route angefragt mit folgenden Daten.
+
 ```
 POST: http://localhost:4200/api/create/user  
   
-{"username": "Hans",
+{"username": "Hansi123",
   "password": "Hansi123",
   "firstname":"Hans" ,
   "lastname":"Peter" ,
   "gender":"M" ,
-  "address":"Baslerstrasse",
+  "address":"Baslerstrasse 2",
   "city":"Basel" ,
-  "job":"-" ,
+  "job":"Unbekannt" ,
   "admin":0}
 ```
+
+Der Admin Wert kann optional auf `1` gesetzt werden.
+
+Man kann sich dann mit dem Benutzer auf `http://localhost:4200` einloggen.
