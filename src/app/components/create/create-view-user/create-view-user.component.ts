@@ -50,7 +50,7 @@ export class CreateViewUserComponent {
   ]);
   public addressForm = new FormControl('', [
     Validators.required,
-    Validators.pattern(/^(\w+)$/i),
+    Validators.pattern(/^[\w\s.]+$/i),
     Validators.minLength(1),
     Validators.maxLength(64),
   ]);
