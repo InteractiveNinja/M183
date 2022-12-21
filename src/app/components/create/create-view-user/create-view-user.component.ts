@@ -66,7 +66,7 @@ export class CreateViewUserComponent {
     Validators.minLength(1),
     Validators.maxLength(32),
   ]);
-  public adminForm = new FormControl('');
+  public adminForm = new FormControl(false);
 
   public userForm = this.fb.group({
     [this.usernameFormName]: this.usernameForm,
