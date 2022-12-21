@@ -1,6 +1,7 @@
 <ng-container *ngIf="user$ | async as user">
   <nav>
     <span *ngIf="user.admin" routerLink="users">Zur Benutzerübersicht</span>
+    <span *ngIf="user.admin" routerLink="admin-bills">Zur Rechnungsübersicht</span>
     <span *ngIf="user.admin" routerLink="create">Erstellungs Menu</span>
     <span *ngIf="user" routerLink="bills">Zur den Rechnungen</span>
     <span *ngIf="user" (click)="edit()">Eigenen Nutzer bearbeiten</span>
@@ -8,3 +9,4 @@
   </nav>
 </ng-container>
 <router-outlet></router-outlet>
+<app-footer></app-footer>
