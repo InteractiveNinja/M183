@@ -206,7 +206,7 @@ export const billSchema: Schema = {
         checkNull: true,
       },
     },
-    isNumeric: true,
+    isInt: true,
     custom: {
       options: (number) => {
         return number > 0;
@@ -245,7 +245,7 @@ export const billSchema: Schema = {
         checkNull: true,
       },
     },
-    isNumeric: true,
+    isInt: true,
   },
 };
 
