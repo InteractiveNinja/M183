@@ -52,7 +52,10 @@ apiRoutes.post(
     return userDao
       .create(usersData)
       .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(400));
+      .catch(() => {
+        Logger.log("User was not created.");
+        return res.sendStatus(400);
+      });
   }
 );
 
@@ -84,6 +87,7 @@ apiRoutes.post('/session', (req: Request, res: Response) => {
     Logger.log(`logging user via session for ${req.sessionID}`);
     return res.json(session.user);
   } else {
+    Logger.log(`No user was found in session.`);
     return res.sendStatus(401);
   }
 });
@@ -95,19 +99,6 @@ apiRoutes.post('/logout', (req: Request, res: Response) => {
   });
   return res.sendStatus(200);
 });
-
-apiRoutes.post(
-  '/create/user',
-  checkSchema(userSchema),
-  checkError,
-  (req: Request, res: Response) => {
-    const usersData: UserDefinition = req.body;
-    return userDao
-      .create(usersData)
-      .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(400));
-  }
-);
 
 apiRoutes.use((req: Request, res: Response, next: NextFunction) => {
   const { session } = req;
@@ -131,7 +122,10 @@ apiRoutes.get(
     return billDao
       .findeAllBy({ where: { userId: id } })
       .then((bills) => (bills ? res.json(bills) : res.json([])))
-      .catch(() => res.sendStatus(500));
+      .catch(() => {
+        Logger.log(`failed get on /bills/id`);
+        return res.sendStatus(500);
+      });
   }
 );
 
@@ -144,7 +138,10 @@ apiRoutes.get(
     return billDao
       .findById(id)
       .then((bill) => (bill == null ? res.sendStatus(404) : res.json(bill)))
-      .catch(() => res.sendStatus(500));
+      .catch(() => {
+        Logger.log(`failed get on /bill/id`);
+        return res.sendStatus(500);
+      });
   }
 );
 
@@ -157,7 +154,10 @@ apiRoutes.post(
     return billDao
       .create(billData)
       .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(500));
+      .catch(() => {
+        Logger.log(`failed post on /create/bill`);
+        return res.sendStatus(500);
+      });
   }
 );
 
@@ -170,7 +170,10 @@ apiRoutes.delete(
     return billDao
       .destroy(id)
       .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(500));
+      .catch(() => {
+        Logger.log(`failed delete on /delete/bill/:id`);
+        return res.sendStatus(500);
+      });
   }
 );
 
@@ -185,7 +188,10 @@ apiRoutes.patch(
       .then((changedEntries) =>
         changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400)
       )
-      .catch(() => res.sendStatus(500));
+      .catch(() => {
+        Logger.log(`failed patch on /update/bill`);
+        return res.sendStatus(500);
+      });
   }
 );
 
@@ -202,7 +208,10 @@ apiRoutes.get(
     return userDao
       .findById(id)
       .then((user) => (user == null ? res.sendStatus(404) : res.json(user)))
-      .catch(() => res.sendStatus(500));
+      .catch(() => {
+        Logger.log(`failed get on /user/:id`);
+        return res.sendStatus(500);
+      });
   }
 );
 
@@ -215,7 +224,10 @@ apiRoutes.delete(
     return userDao
       .destroy(id)
       .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(404));
+      .catch(() => {
+        Logger.log(`failed delete on /delete/user/:id`);
+        return res.sendStatus(404);
+      });
   }
 );
 
@@ -230,6 +242,9 @@ apiRoutes.patch(
       .then((changedEntries) => {
         changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400);
       })
-      .catch(() => res.sendStatus(500));
+      .catch(() => {
+        Logger.log(`failed patch on /update/user`);
+        return res.sendStatus(500);
+      });
   }
 );
