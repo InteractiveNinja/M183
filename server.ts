@@ -32,6 +32,7 @@ export function app(): express.Express {
     helmet.contentSecurityPolicy({
       directives: {
         'default-src': ["'self'"],
+        'script-src-attr': ["'unsafe-inline'"], // Bootstrap Styling defined in angular.json
         'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
       },
       reportOnly: process.env['NODE_ENV'] !== 'production',
