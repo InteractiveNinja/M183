@@ -30,8 +30,8 @@ export function app(): express.Express {
   server.use(
     helmet.contentSecurityPolicy({
       directives: {
-        'default-src': ['self'],
-        'style-src': ['self', 'unsafe-inline'],
+        'default-src': ["'self'"],
+        'style-src': ["'self'", "'unsafe-inline'"],
       },
     })
   );
