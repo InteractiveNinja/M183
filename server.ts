@@ -10,6 +10,7 @@ import {existsSync} from 'fs';
 import {apiRoutes} from './server/rest/routes';
 import {Logger} from './server/util/logger';
 import helmet from 'helmet';
+import * as process from 'process';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -33,6 +34,7 @@ export function app(): express.Express {
         'default-src': ["'self'"],
         'style-src': ["'self'", "'unsafe-inline'"],
       },
+      reportOnly: process.env['NODE_ENV'] !== 'production',
     })
   );
   // Adds JSON Support to express Server

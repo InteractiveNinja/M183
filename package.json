@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev:ssr": "ng run CityBillSystem:serve-ssr",
-    "serve:ssr": "node dist/CityBillSystem/server/main.js",
+    "serve:ssr": "NODE_ENV=production node dist/CityBillSystem/server/main.js",
     "build:ssr": "ng build && ng run CityBillSystem:server",
     "prerender": "ng run CityBillSystem:prerender",
     "lint": "ng lint"
