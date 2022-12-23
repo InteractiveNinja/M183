@@ -11,6 +11,7 @@ describe('Login Site', () => {
   describe('Invalide Username Validation Message', () => {
     afterEach(() => {
       cy.get('form > div.alert').should('exist');
+      cy.get('form > button').should('have.attr', 'disabled');
     });
     it('invalide char', () => {
       cy.get('#username').type('wrongUserName!');
@@ -42,6 +43,45 @@ describe('Login Site', () => {
       cy.get('form > div.alert > div').should(
         'contain.text',
         'Benutzername muss eingegeben werden.'
+      );
+    });
+  });
+  describe('Invalide Password Validation Message', () => {
+    afterEach(() => {
+      cy.get('form > div.alert').should('exist');
+    });
+    it('invalide char', () => {
+      cy.get('#username').type('Hansi123');
+      cy.get('#password').type('Hansi123€');
+      cy.get('form > div.alert > div').should(
+        'contain.text',
+        'Passwort kann nur aus folgenden Zeichen bestehen.'
+      );
+    });
+    it('to short', () => {
+      cy.get('#username').type('Hansi123');
+      cy.get('#password').type('f');
+      cy.get('form > div.alert > div').should(
+        'contain.text',
+        'Passwort muss mindestens 8 Zeichen lang sein.'
+      );
+    });
+    it('to long', () => {
+      cy.get('#username').type('Hansi123');
+      cy.get('#password').type(
+        'Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123Hansi123'
+      );
+      cy.get('form > div.alert > div').should(
+        'contain.text',
+        'Passwort kann maximal 64 Zeichen lang sein.'
+      );
+    });
+    it('empty', () => {
+      cy.get('#username').type('Hansi123');
+      cy.get('#password').type('Hansi123').clear();
+      cy.get('form > div.alert > div').should(
+        'contain.text',
+        'Passwort muss eingegeben werden.'
       );
     });
   });
