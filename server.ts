@@ -32,7 +32,7 @@ export function app(): express.Express {
     helmet.contentSecurityPolicy({
       directives: {
         'default-src': ["'self'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
+        'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
       },
       reportOnly: process.env['NODE_ENV'] !== 'production',
     })
