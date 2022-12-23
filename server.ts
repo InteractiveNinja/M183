@@ -9,6 +9,7 @@ import {APP_BASE_HREF} from '@angular/common';
 import {existsSync} from 'fs';
 import {apiRoutes} from './server/rest/routes';
 import {Logger} from './server/util/logger';
+import helmet from 'helmet';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -26,6 +27,16 @@ export function app(): express.Express {
     })
   );
 
+  server.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          'default-src': ['self'],
+          'style-src': ['self', 'unsafe-inline'],
+        },
+      },
+    })
+  );
   // Adds JSON Support to express Server
   server.use(express.json());
   // Adds my Custom Routes to the server
