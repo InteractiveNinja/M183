@@ -96,7 +96,7 @@ apiRoutes.post(
           });
         });
       } else {
-        Logger.log(`failed login with ${session.id}`);
+        Logger.log(`failed login from ${req.sessionID}`);
         return res.sendStatus(401);
       }
     });
