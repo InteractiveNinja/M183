@@ -9,7 +9,10 @@ enum LOGLEVELS {
 export class Logger {
 
   private static logger = winston.createLogger({
-    format: winston.format.json(),
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json()
+    ),
     transports: [
       new winston.transports.File({ filename: "logs/error.log", level: LOGLEVELS.ERROR }),
       new winston.transports.File({ filename: "logs/combined.log" }),
