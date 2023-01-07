@@ -12,11 +12,11 @@ import { User } from '../data/models/user';
 import { Logger } from '../util/logger';
 import {
   billSchema,
-  checkError,
+  checkError, checkPrivilege, checkPrivilegeSelf,
   idSchema,
   loginSchema,
-  userSchema,
-} from './validatorSchemas';
+  userSchema
+} from "./validatorSchemas";
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
@@ -55,6 +55,7 @@ apiRoutes.post(
   '/create/user',
   checkSchema(userSchema),
   checkError,
+  checkPrivilege,
   (req: Request, res: Response) => {
     const usersData: UserDefinition = req.body;
     return userDao
@@ -126,7 +127,9 @@ apiRoutes.use((req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-apiRoutes.get('/bills', (req, res) => {
+apiRoutes.get('/bills',
+  checkPrivilege,
+  (req, res) => {
   return billDao.findAll().then((bills) => res.json(bills));
 });
 
@@ -134,6 +137,7 @@ apiRoutes.get(
   '/bills/:id',
   checkSchema(idSchema),
   checkError,
+  checkPrivilegeSelf,
   (req: Request, res: Response) => {
     const { id } = req.params;
     return billDao
@@ -147,6 +151,7 @@ apiRoutes.get(
   '/bill/:id',
   checkSchema(idSchema),
   checkError,
+  checkPrivilege, //TODO? self check test
   (req: Request, res: Response) => {
     const { id } = req.params;
     return billDao
@@ -160,6 +165,7 @@ apiRoutes.post(
   '/create/bill',
   checkSchema(billSchema),
   checkError,
+  checkPrivilege,
   (req: Request, res: Response) => {
     const billData: BillDefinition = req.body;
     return billDao
@@ -173,6 +179,7 @@ apiRoutes.delete(
   '/delete/bill/:id',
   checkSchema(idSchema),
   checkError,
+  checkPrivilege,
   (req: Request, res: Response) => {
     const { id } = req.params;
     return billDao
@@ -186,6 +193,7 @@ apiRoutes.patch(
   '/update/bill',
   checkSchema(billSchema),
   checkError,
+  checkPrivilege,
   (req: Request, res: Response) => {
     const billData: BillDefinition = req.body;
     return billDao
@@ -197,7 +205,9 @@ apiRoutes.patch(
   }
 );
 
-apiRoutes.get('/users', (req, res) => {
+apiRoutes.get('/users',
+  checkPrivilege,
+  (req, res) => {
   return userDao.findAll().then((users) => res.json(users));
 });
 
@@ -205,6 +215,7 @@ apiRoutes.get(
   '/user/:id',
   checkSchema(idSchema),
   checkError,
+  checkPrivilegeSelf,
   (req: Request, res: Response) => {
     const { id } = req.params;
     return userDao
@@ -218,6 +229,7 @@ apiRoutes.delete(
   '/delete/user/:id',
   checkSchema(idSchema),
   checkError,
+  checkPrivilege,
   (req: Request, res: Response) => {
     const { id } = req.params;
     return userDao
@@ -231,6 +243,7 @@ apiRoutes.patch(
   '/update/user',
   checkSchema(userSchema),
   checkError,
+  checkPrivilegeSelf,
   (req: Request, res: Response) => {
     const usersData: UserDefinition = req.body;
     return userDao
