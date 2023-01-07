@@ -266,3 +266,22 @@ export function checkError(req: Request, res: Response, next: NextFunction) {
   }
   return next();
 }
+
+export function checkPrivilegeSelf(req: Request, res: Response, next: NextFunction) {
+
+  const { requestId } = req.params;
+  let requesterId  = req.session.user?.id;
+
+  if ( requesterId == parseInt(requestId)) {
+    return next();
+  }
+  return res.sendStatus(401);
+}
+
+export function checkPrivilege(req: Request, res: Response, next: NextFunction) {
+
+  if ( req.session.user?.admin) {
+    return next();
+  }
+  return res.sendStatus(401);
+}
