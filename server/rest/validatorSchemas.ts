@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+import { Logger } from '../util/logger';
 import { Schema, validationResult } from 'express-validator';
+
 
 export const loginSchema: Schema = {
   username: {
@@ -258,10 +260,16 @@ export const billSchema: Schema = {
 export function checkError(req: Request, res: Response, next: NextFunction) {
   let errors = validationResult(req);
   if (!errors.isEmpty()) {
+    const mappedErrors = errors
+      .array()
+      .map(({ value, param, msg }) => ({ value, param, msg }));
+    Logger.log(
+      `Failed Validation from ${req.sessionID} with values: ${JSON.stringify(
+        mappedErrors
+      )}`
+    );
     return res.status(400).json({
-      errors: errors
-        .array()
-        .map(({ value, param, msg }) => ({ value, param, msg })),
+      errors: mappedErrors,
     });
   }
   return next();
