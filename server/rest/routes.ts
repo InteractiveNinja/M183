@@ -1,10 +1,13 @@
+import * as SessionStore from 'connect-session-sequelize';
 import * as cookieParser from 'cookie-parser';
 import { NextFunction, Request, Response, Router } from 'express';
 import * as sessions from 'express-session';
+import { Store } from 'express-session';
 import { checkSchema } from 'express-validator';
 import { BillDefinition } from '../data/dao/billDao';
 import { UserDefinition } from '../data/dao/userDao';
 import { DaoFactory } from '../data/factory/daoFactory';
+import { SequelizeFactory } from '../data/factory/sequelizeFactory';
 import { User } from '../data/models/user';
 import { Logger } from '../util/logger';
 import {
@@ -21,6 +24,11 @@ const daoFactory = DaoFactory.getInstance();
 const userDao = daoFactory.createUserDao();
 const billDao = daoFactory.createBillDao();
 
+const database = SequelizeFactory.getInstance().getSequelize();
+const sessionStore = SessionStore(Store);
+
+const sequelizeStore = new sessionStore({ db: database });
+
 //Extends SessionInterface with User Model
 declare module 'express-session' {
   interface SessionData {
@@ -32,7 +40,6 @@ declare module 'express-session' {
 apiRoutes.use(cookieParser());
 
 const oneDay = 1000 * 60 * 60 * 24;
-
 //session middleware
 apiRoutes.use(
   sessions({
@@ -40,6 +47,7 @@ apiRoutes.use(
     saveUninitialized: true,
     cookie: { maxAge: oneDay, httpOnly: true },
     resave: false,
+    store: sequelizeStore,
   })
 );
 
@@ -54,7 +62,7 @@ apiRoutes.post(
       .then(() => res.sendStatus(200))
       .catch(() => {
         Logger.log('User was not created.');
-        return res.sendStatus(400);
+        return res.sendStatus(500);
       });
   }
 );
@@ -64,15 +72,29 @@ apiRoutes.post(
   checkSchema(loginSchema),
   checkError,
   (req: Request, res: Response) => {
-    const { session } = req;
     const { username, password } = req.body;
     return userDao.findOneBy({ where: { username } }).then((user) => {
       if (user && user.checkPassword(password)) {
-        const newSession = session.regenerate(() => {
+        return req.session.regenerate((err) => {
           Logger.log(`regenerate session for ${req.sessionID}`);
+          if (err) {
+            Logger.error(`could not regenerate session for ${req.sessionID}`);
+            return res.sendStatus(500);
+          }
+
+          // save user into cookie
+          req.session.user = user;
+
+          // Can only sent response after cookie was saved in database, else old cookie will be sent.
+          return req.session.save((err) => {
+            Logger.log(`saving session for ${req.sessionID}`);
+            if (err) {
+              Logger.error(`could not save session for ${req.sessionID}`);
+              return res.sendStatus(500);
+            }
+            return res.json(user);
+          });
         });
-        newSession.user = user;
-        return res.json(user);
       } else {
         Logger.log(`failed login with ${session.id}`);
         return res.sendStatus(401);

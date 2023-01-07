@@ -1,6 +1,7 @@
-import { Schema, validationResult } from 'express-validator';
 import { NextFunction, Request, Response } from 'express';
 import { Logger } from '../util/logger';
+import { Schema, validationResult } from 'express-validator';
+
 
 export const loginSchema: Schema = {
   username: {
@@ -129,7 +130,7 @@ export const userSchema: Schema = {
     isString: true,
     escape: true,
     matches: {
-      options: /^(\w+)$/i,
+      options: /^[\w\s.]+$/i,
       errorMessage: 'Not allowed characters used',
     },
   },
@@ -175,6 +176,15 @@ export const userSchema: Schema = {
       errorMessage: 'Not allowed characters used',
     },
   },
+  admin: {
+    exists: {
+      errorMessage: 'admin is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isBoolean: true,
+  },
 };
 
 export const idSchema: Schema = {
@@ -198,7 +208,7 @@ export const billSchema: Schema = {
         checkNull: true,
       },
     },
-    isNumeric: true,
+    isInt: true,
     custom: {
       options: (number) => {
         return number > 0;
@@ -237,7 +247,7 @@ export const billSchema: Schema = {
         checkNull: true,
       },
     },
-    isNumeric: true,
+    isInt: true,
   },
 };
 

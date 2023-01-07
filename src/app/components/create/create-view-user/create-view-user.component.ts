@@ -50,7 +50,7 @@ export class CreateViewUserComponent {
   ]);
   public addressForm = new FormControl('', [
     Validators.required,
-    Validators.pattern(/^(\w+)$/i),
+    Validators.pattern(/^[\w\s.]+$/i),
     Validators.minLength(1),
     Validators.maxLength(64),
   ]);
@@ -66,7 +66,7 @@ export class CreateViewUserComponent {
     Validators.minLength(1),
     Validators.maxLength(32),
   ]);
-  public adminForm = new FormControl('');
+  public adminForm = new FormControl(false);
 
   public userForm = this.fb.group({
     [this.usernameFormName]: this.usernameForm,

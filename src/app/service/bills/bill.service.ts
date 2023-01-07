@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { BillModel } from './bill.model';
 import { environment } from '../../../environments/environment';
+import { BillModel } from './bill.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +21,15 @@ export class BillService {
         { ...bill },
         { observe: 'response', responseType: 'text' }
       )
+      .pipe(map((e) => e.ok));
+  }
+
+  public deleteBill(billId: number): Observable<boolean> {
+    return this.http
+      .delete(`${environment.api}/delete/bill/${billId}`, {
+        observe: 'response',
+        responseType: 'text',
+      })
       .pipe(map((e) => e.ok));
   }
 }
