@@ -23,8 +23,8 @@ const sequelize = SequelizeFactory.getInstance().getSequelize();
 export class UserDao implements DaoInterface<User, UserDefinition> {
   async create(user: UserDefinition): Promise<void> {
     await sequelize.transaction(async (t) => {
-      await User.create({ ...user }, { transaction: t }).catch((reason) => {
-        Logger.error(reason);
+      await User.create({ ...user }, { transaction: t }).catch(() => {
+        Logger.error('failed to create user');
         return Promise.reject();
       });
     });
@@ -34,8 +34,8 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
     return await sequelize.transaction(async (t) => {
       return await User.findAll({ include: Bill, transaction: t })
         .then((users) => users)
-        .catch((reason) => {
-          Logger.error(reason);
+        .catch(() => {
+          Logger.error('failed to fetch users');
           return Promise.reject();
         });
     });
@@ -44,8 +44,8 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
   async findById(id: number | string): Promise<User | null> {
     return await sequelize.transaction(async (t) => {
       return await User.findByPk(id, { include: Bill, transaction: t }).catch(
-        (reason) => {
-          Logger.error(reason);
+        () => {
+          Logger.error(`failed to fetch user by id with given id: ${id}`);
           return Promise.reject();
         }
       );
@@ -61,8 +61,8 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
           }
           return Promise.reject();
         })
-        .catch((reason) => {
-          Logger.error(reason);
+        .catch(() => {
+          Logger.error(`failed to delete user by id with given id: ${id}`);
           return Promise.reject();
         });
     });
@@ -70,12 +70,10 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
 
   async findOneBy(query: FindOptions<Attributes<User>>): Promise<User | null> {
     return await sequelize.transaction(async (t) => {
-      return await User.findOne({ ...query, transaction: t }).catch(
-        (reason) => {
-          Logger.error(reason);
-          return Promise.reject();
-        }
-      );
+      return await User.findOne({ ...query, transaction: t }).catch(() => {
+        Logger.error('failed to find single user with find options');
+        return Promise.reject();
+      });
     });
   }
 
@@ -93,8 +91,8 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
         );
         return promise[0];
       })
-      .catch((reason) => {
-        Logger.error(reason);
+      .catch(() => {
+        Logger.error('failed to update user');
         return Promise.reject();
       });
   }
@@ -106,8 +104,8 @@ export class UserDao implements DaoInterface<User, UserDefinition> {
       .transaction(async (t) => {
         return await User.findAll({ ...query, transaction: t });
       })
-      .catch((reason) => {
-        Logger.error(reason);
+      .catch(() => {
+        Logger.error('failed to find all users with find options');
         return Promise.reject();
       });
   }
