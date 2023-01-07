@@ -275,6 +275,9 @@ export function checkPrivilegeSelf(req: Request, res: Response, next: NextFuncti
   if ( requesterId == parseInt(requestId)) {
     return next();
   }
+  if ( req.session.user?.admin) {
+    return next();
+  }
   return res.sendStatus(401);
 }
 
