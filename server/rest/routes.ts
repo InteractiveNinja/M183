@@ -53,7 +53,7 @@ apiRoutes.post(
       .create(usersData)
       .then(() => res.sendStatus(200))
       .catch(() => {
-        Logger.log("User was not created.");
+        Logger.log('User was not created.');
         return res.sendStatus(400);
       });
   }
@@ -87,7 +87,9 @@ apiRoutes.post('/session', (req: Request, res: Response) => {
     Logger.log(`logging user via session for ${req.sessionID}`);
     return res.json(session.user);
   } else {
-    Logger.log(`No user was found in session.`);
+    Logger.log(
+      `failed session login for ${session.id}, not authorized session found`
+    );
     return res.sendStatus(401);
   }
 });
