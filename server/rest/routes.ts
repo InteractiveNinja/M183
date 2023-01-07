@@ -56,14 +56,18 @@ apiRoutes.post(
   checkSchema(userSchema),
   checkError,
   (req: Request, res: Response) => {
-    const usersData: UserDefinition = req.body;
-    return userDao
-      .create(usersData)
-      .then(() => res.sendStatus(200))
-      .catch(() => {
-        Logger.log('DEV: User was not created.');
-        return res.sendStatus(500);
-      });
+    if (process.env['NODE_ENV'] != 'development') {
+      return res.sendStatus(501);
+    } else {
+      const usersData: UserDefinition = req.body;
+      return userDao
+        .create(usersData)
+        .then(() => res.sendStatus(200))
+        .catch(() => {
+          Logger.log('DEV: User was not created.');
+          return res.sendStatus(500);
+        });
+    }
   }
 );
 
