@@ -15,8 +15,8 @@ import {
   checkError, checkPrivilege, checkPrivilegeSelf,
   idSchema,
   loginSchema,
-  userSchema,
-} from './validatorSchemas';
+  userSchema
+} from "./validatorSchemas";
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
