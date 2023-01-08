@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Logger } from '../util/logger';
 import { Schema, validationResult } from 'express-validator';
-import { Logger } from "../util/logger";
-
 
 export const loginSchema: Schema = {
   username: {
@@ -276,33 +274,43 @@ export function checkError(req: Request, res: Response, next: NextFunction) {
   return next();
 }
 
-export function checkPrivilegeSelf(req: Request, res: Response, next: NextFunction) {
-
-  const { requestId } = req.params;
-
-  if ( req.session.user?.admin) {
-    Logger.log(`Privilege check succeeded for request on ${requestId} because user is admin`);
-
-    return next();
-  }
+export function checkPrivilegeSelf(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  // id is the set variable name for all request params which requires an id
+  const { id } = req.params;
 
   //Check if User is trying to use their own entry
-  if (req.session.user?.id != undefined) {
-    let requesterId  = req.session.user.id;
-    if ( Math.round(requesterId) == parseInt(requestId)) {
-      Logger.log(`Self privilege check succeeded on ${requestId} by ${requesterId}`);
+  if (req.session.user?.id) {
+    const requesterId = req.session.user.id;
+    if (requesterId == parseInt(id)) {
+      Logger.log(`Self privilege check succeeded on ${id} by ${requesterId}`);
       return next();
     }
-  }
 
-  Logger.log(`Failed privilege check for request on ID:${requestId}`)
-  return res.sendStatus(401);
+    Logger.log(
+      `Failed Self privilege check from ${requesterId}, trying admin check`
+    );
+    // Reuses Admin Check, if it fails uses fail response from admin check
+    checkPrivilege(req, res, () => {
+      Logger.log(
+        `Privilege check succeeded for request on ${id} because user ${requesterId} is admin`
+      );
+    });
+  }
 }
 
-export function checkPrivilege(req: Request, res: Response, next: NextFunction) {
-
-  if ( req.session.user?.admin) {
-    Logger.log(`Successful admin privilege check by ${req.session.user?.admin}`);
+export function checkPrivilege(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (req.session.user?.admin) {
+    Logger.log(
+      `Successful admin privilege check by ${req.session.user?.admin}`
+    );
     return next();
   }
   Logger.log(`Failed admin privilege check by ${req.session.user?.id}`);
