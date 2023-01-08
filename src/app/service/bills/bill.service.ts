@@ -14,6 +14,10 @@ export class BillService {
     return this.http.get<BillModel[]>(`${environment.api}/bills/${id}`);
   }
 
+  public getAllBills(): Observable<BillModel[]> {
+    return this.http.get<BillModel[]>(`${environment.api}/bills`);
+  }
+
   public createBill(bill: BillModel): Observable<boolean> {
     return this.http
       .post(

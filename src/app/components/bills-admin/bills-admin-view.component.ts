@@ -40,7 +40,7 @@ export class BillsAdminViewComponent {
       .subscribe((user) => {
         if (user) {
           this.billService
-            .getAllBillsById(user.id)
+            .getAllBills()
             .pipe(take(1))
             .subscribe((bills) => {
               this.bills$.next(bills);
