@@ -12,11 +12,13 @@ import { User } from '../data/models/user';
 import { Logger } from '../util/logger';
 import {
   billSchema,
-  checkError, checkPrivilege, checkPrivilegeSelf,
+  checkError,
+  checkPrivilege,
+  checkPrivilegeSelf,
   idSchema,
   loginSchema,
-  userSchema
-} from "./validatorSchemas";
+  userSchema,
+} from './validatorSchemas';
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
@@ -55,7 +57,6 @@ apiRoutes.post(
   '/dev/create/user',
   checkSchema(userSchema),
   checkError,
-  checkPrivilege,
   (req: Request, res: Response) => {
     if (process.env['NODE_ENV'] != 'development') {
       return res.sendStatus(501);
@@ -138,9 +139,7 @@ apiRoutes.use((req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-apiRoutes.get('/bills',
-  checkPrivilege,
-  (req, res) => {
+apiRoutes.get('/bills', checkPrivilege, (req, res) => {
   return billDao.findAll().then((bills) => res.json(bills));
 });
 
@@ -248,9 +247,7 @@ apiRoutes.post(
   }
 );
 
-apiRoutes.get('/users',
-  checkPrivilege,
-  (req, res) => {
+apiRoutes.get('/users', checkPrivilege, (req, res) => {
   return userDao.findAll().then((users) => res.json(users));
 });
 
