@@ -30,8 +30,8 @@ export class UserEditService {
   public updateUser(user: User): Observable<boolean> {
     return this.http
       .patch(
-        `${environment.api}/update/user`,
-        { ...user },
+        `${environment.api}/update/user/${user.id}`,
+        { job: user.job },
         { responseType: 'text', observe: 'response' }
       )
       .pipe(
