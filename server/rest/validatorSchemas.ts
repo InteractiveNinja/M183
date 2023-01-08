@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Logger } from '../util/logger';
 import { Schema, validationResult } from 'express-validator';
 
+
 export const loginSchema: Schema = {
   username: {
     exists: {
