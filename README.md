@@ -19,7 +19,7 @@
 Um einen Webbenutzer zu erstellen, wird per `POST Request` folgenden Route angefragt mit folgenden Daten.
 
 ```
-POST: http://localhost:4200/dev/create/user  
+POST: http://localhost:4200/api/dev/create/user 
   
 {"username": "Hansi123",
   "password": "Hansi123",
