@@ -212,25 +212,6 @@ apiRoutes.delete(
   }
 );
 
-apiRoutes.patch(
-  '/update/bill',
-  checkSchema(billSchema),
-  checkError,
-  checkPrivilege,
-  (req: Request, res: Response) => {
-    const billData: BillDefinition = req.body;
-    return billDao
-      .update(billData)
-      .then((changedEntries) =>
-        changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400)
-      )
-      .catch(() => {
-        Logger.log(`failed patch on /update/bill`);
-        return res.sendStatus(500);
-      });
-  }
-);
-
 apiRoutes.post(
   '/create/user',
   checkSchema(userSchema),
