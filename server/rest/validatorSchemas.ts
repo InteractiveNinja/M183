@@ -294,7 +294,9 @@ export function checkPrivilegeSelf(req: Request, res: Response, next: NextFuncti
 export function checkPrivilege(req: Request, res: Response, next: NextFunction) {
 
   if ( req.session.user?.admin) {
+    Logger.log(`Successful admin privilege check by ${req.session.user?.admin}`);
     return next();
   }
+  Logger.log(`Failed admin privilege check by ${req.session.user?.id}`);
   return res.sendStatus(401);
 }
