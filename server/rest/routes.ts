@@ -16,6 +16,7 @@ import {
   checkPrivilege,
   checkPrivilegeSelf,
   idSchema,
+  jobSchema,
   loginSchema,
   userSchema,
 } from './validatorSchemas';
@@ -286,16 +287,20 @@ apiRoutes.delete(
 );
 
 apiRoutes.patch(
-  '/update/user',
-  checkSchema(userSchema),
+  '/update/user/:id',
+  checkSchema(jobSchema),
   checkError,
   checkPrivilegeSelf,
   (req: Request, res: Response) => {
-    const usersData: UserDefinition = req.body;
+    const { id } = req.params;
+    const { job }: UserDefinition = req.body;
     return userDao
-      .update(usersData)
-      .then((changedEntries) => {
-        changedEntries >= 1 ? res.sendStatus(200) : res.sendStatus(400);
+      .findById(id)
+      .then((user) => {
+        if (user) {
+          return user.update({ job }).then(() => res.sendStatus(200));
+        }
+        return Promise.reject();
       })
       .catch(() => {
         Logger.log(`failed patch on /update/user`);
