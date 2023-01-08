@@ -17,8 +17,8 @@ export class UsersService {
   public createUser(user: User): Observable<boolean> {
     return this.http
       .post(
-        `${environment.api}/create/user`,
-        { ...user },
+        `${environment.api}/create/user/${user.id}`,
+        { job: user.job },
         { observe: 'response', responseType: 'text' }
       )
       .pipe(map((e) => e.ok));
