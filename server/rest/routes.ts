@@ -15,8 +15,8 @@ import {
   checkError, checkPrivilege, checkPrivilegeSelf,
   idSchema,
   loginSchema,
-  userSchema
-} from "./validatorSchemas";
+  userSchema,
+} from './validatorSchemas';
 
 export const apiRoutes = Router();
 const daoFactory = DaoFactory.getInstance();
@@ -52,19 +52,23 @@ apiRoutes.use(
 );
 
 apiRoutes.post(
-  '/create/user',
+  '/dev/create/user',
   checkSchema(userSchema),
   checkError,
   checkPrivilege,
   (req: Request, res: Response) => {
-    const usersData: UserDefinition = req.body;
-    return userDao
-      .create(usersData)
-      .then(() => res.sendStatus(200))
-      .catch(() => {
-        Logger.log('User was not created.');
-        return res.sendStatus(500);
-      });
+    if (process.env['NODE_ENV'] != 'development') {
+      return res.sendStatus(501);
+    } else {
+      const usersData: UserDefinition = req.body;
+      return userDao
+        .create(usersData)
+        .then(() => res.sendStatus(200))
+        .catch(() => {
+          Logger.log('DEV: User was not created.');
+          return res.sendStatus(500);
+        });
+    }
   }
 );
 
@@ -222,6 +226,23 @@ apiRoutes.patch(
       )
       .catch(() => {
         Logger.log(`failed patch on /update/bill`);
+        return res.sendStatus(500);
+      });
+  }
+);
+
+apiRoutes.post(
+  '/create/user',
+  checkSchema(userSchema),
+  checkError,
+  checkPrivilege,
+  (req: Request, res: Response) => {
+    const usersData: UserDefinition = req.body;
+    return userDao
+      .create(usersData)
+      .then(() => res.sendStatus(200))
+      .catch(() => {
+        Logger.log('User was not created.');
         return res.sendStatus(500);
       });
   }
