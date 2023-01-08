@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Schema, validationResult } from 'express-validator';
+import { Logger } from "../util/logger";
 
 export const loginSchema: Schema = {
   username: {
@@ -270,14 +271,23 @@ export function checkError(req: Request, res: Response, next: NextFunction) {
 export function checkPrivilegeSelf(req: Request, res: Response, next: NextFunction) {
 
   const { requestId } = req.params;
-  let requesterId  = req.session.user?.id;
 
-  if ( requesterId == parseInt(requestId)) {
-    return next();
-  }
   if ( req.session.user?.admin) {
+    Logger.log(`Privilege check succeeded for request on ${requestId} because user is admin`);
+
     return next();
   }
+
+  //Check if User is trying to use their own entry
+  if (req.session.user?.id != undefined) {
+    let requesterId  = req.session.user.id;
+    if ( Math.round(requesterId) == parseInt(requestId)) {
+      Logger.log(`Self privilege check succeeded on ${requestId} by ${requesterId}`);
+      return next();
+    }
+  }
+
+  Logger.log(`Failed privilege check for request on ID:${requestId}`)
   return res.sendStatus(401);
 }
 
