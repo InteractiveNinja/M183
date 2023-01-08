@@ -165,7 +165,7 @@ apiRoutes.get(
   '/bill/:id',
   checkSchema(idSchema),
   checkError,
-  checkPrivilege, //TODO? self check test
+  checkPrivilege,
   (req: Request, res: Response) => {
     const { id } = req.params;
     return billDao
