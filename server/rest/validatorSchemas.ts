@@ -47,6 +47,30 @@ export const loginSchema: Schema = {
   },
 };
 
+export const jobSchema: Schema = {
+  job: {
+    exists: {
+      errorMessage: 'Job is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isLength: {
+      errorMessage: 'Job should be between 1 and 32 chars.',
+      options: {
+        min: 1,
+        max: 32,
+      },
+    },
+    isString: true,
+    escape: true,
+    matches: {
+      options: /^([a-z]+)$/i,
+      errorMessage: 'Not allowed characters used',
+    },
+  },
+};
+
 export const userSchema: Schema = {
   ...loginSchema,
   firstname: {
@@ -154,27 +178,7 @@ export const userSchema: Schema = {
       errorMessage: 'Not allowed characters used',
     },
   },
-  job: {
-    exists: {
-      errorMessage: 'Job is not set',
-      options: {
-        checkNull: true,
-      },
-    },
-    isLength: {
-      errorMessage: 'Job should be between 1 and 32 chars.',
-      options: {
-        min: 1,
-        max: 32,
-      },
-    },
-    isString: true,
-    escape: true,
-    matches: {
-      options: /^([a-z]+)$/i,
-      errorMessage: 'Not allowed characters used',
-    },
-  },
+  ...jobSchema,
   admin: {
     exists: {
       errorMessage: 'admin is not set',
