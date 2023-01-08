@@ -281,7 +281,8 @@ apiRoutes.patch(
         if (user) {
           return user.update({ job }).then(() => res.sendStatus(200));
         }
-        return Promise.reject();
+        Logger.log(`failed to find user to patch on /update/user`);
+        return res.sendStatus(404);
       })
       .catch(() => {
         Logger.log(`failed patch on /update/user`);
