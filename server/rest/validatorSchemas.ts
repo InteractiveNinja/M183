@@ -48,6 +48,30 @@ export const loginSchema: Schema = {
   },
 };
 
+export const jobSchema: Schema = {
+  job: {
+    exists: {
+      errorMessage: 'Job is not set',
+      options: {
+        checkNull: true,
+      },
+    },
+    isLength: {
+      errorMessage: 'Job should be between 1 and 32 chars.',
+      options: {
+        min: 1,
+        max: 32,
+      },
+    },
+    isString: true,
+    escape: true,
+    matches: {
+      options: /^([a-z]+)$/i,
+      errorMessage: 'Not allowed characters used',
+    },
+  },
+};
+
 export const userSchema: Schema = {
   ...loginSchema,
   firstname: {
@@ -155,27 +179,7 @@ export const userSchema: Schema = {
       errorMessage: 'Not allowed characters used',
     },
   },
-  job: {
-    exists: {
-      errorMessage: 'Job is not set',
-      options: {
-        checkNull: true,
-      },
-    },
-    isLength: {
-      errorMessage: 'Job should be between 1 and 32 chars.',
-      options: {
-        min: 1,
-        max: 32,
-      },
-    },
-    isString: true,
-    escape: true,
-    matches: {
-      options: /^([a-z]+)$/i,
-      errorMessage: 'Not allowed characters used',
-    },
-  },
+  ...jobSchema,
   admin: {
     exists: {
       errorMessage: 'admin is not set',
@@ -273,4 +277,43 @@ export function checkError(req: Request, res: Response, next: NextFunction) {
     });
   }
   return next();
+}
+
+export function checkPrivilegeSelf(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  // id is the set variable name for all request params which requires an id
+  const { id } = req.params;
+
+  //Check if User is trying to use their own entry
+  if (req.session.user?.id) {
+    const requesterId = req.session.user.id;
+    if (requesterId == parseInt(id)) {
+      Logger.log(`Self privilege check succeeded on ${id} by ${requesterId}`);
+      return next();
+    }
+
+    Logger.log(
+      `Failed Self privilege check from ${requesterId}, trying admin check`
+    );
+    // Reuses Admin Check, if it fails uses fail response from admin check
+    checkPrivilege(req, res, () => {
+      return next();
+    });
+  }
+}
+
+export function checkPrivilege(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (req.session.user?.admin) {
+    Logger.log(`Successful admin privilege check by ${req.session.user?.id}`);
+    return next();
+  }
+  Logger.log(`Failed admin privilege check by ${req.session.user?.id}`);
+  return res.sendStatus(401);
 }
