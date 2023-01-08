@@ -29,6 +29,7 @@ export function app(): express.Express {
   );
 
   server.use(helmet.hsts());
+  server.use(helmet.xssFilter());
   server.use(
     helmet.contentSecurityPolicy({
       directives: {
