@@ -295,9 +295,7 @@ export function checkPrivilegeSelf(
     );
     // Reuses Admin Check, if it fails uses fail response from admin check
     checkPrivilege(req, res, () => {
-      Logger.log(
-        `Privilege check succeeded for request on ${id} because user ${requesterId} is admin`
-      );
+      return next();
     });
   }
 }
@@ -308,9 +306,7 @@ export function checkPrivilege(
   next: NextFunction
 ) {
   if (req.session.user?.admin) {
-    Logger.log(
-      `Successful admin privilege check by ${req.session.user?.admin}`
-    );
+    Logger.log(`Successful admin privilege check by ${req.session.user?.id}`);
     return next();
   }
   Logger.log(`Failed admin privilege check by ${req.session.user?.id}`);
